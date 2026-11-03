@@ -1,0 +1,1076 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1118">
+<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+<title>RRB Prep Desk</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sticky tab bar over one working column; cards by role; exam screen is a two-pane console. */
+:root{
+ --bg:#0b1118;--panel:#111a24;--panel2:#172331;--line:#243547;--fg:#e6edf4;--muted:#8fa3b6;
+ --accent:#ffb454;--accent-ink:#1c1204;--sky:#6aa9ff;--good:#3dc788;--bad:#f0685d;
+ --f-display:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;--f-body:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;--f-mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+ color-scheme:dark}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f1f4f8;--panel:#ffffff;--panel2:#e8edf3;--line:#cfd9e4;--fg:#0e1a28;--muted:#54687c;--accent:#b4570a;--accent-ink:#ffffff;--sky:#1c5bc9;--good:#11785a;--bad:#c4301f;color-scheme:light}}
+:root[data-theme="light"]{--bg:#f1f4f8;--panel:#ffffff;--panel2:#e8edf3;--line:#cfd9e4;--fg:#0e1a28;--muted:#54687c;--accent:#b4570a;--accent-ink:#ffffff;--sky:#1c5bc9;--good:#11785a;--bad:#c4301f;color-scheme:light}
+:root[data-theme="dark"]{--bg:#0b1118;--panel:#111a24;--panel2:#172331;--line:#243547;--fg:#e6edf4;--muted:#8fa3b6;--accent:#ffb454;--accent-ink:#1c1204;--sky:#6aa9ff;--good:#3dc788;--bad:#f0685d;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.5;padding-block:0 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
+.shell{max-width:1120px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.15;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:clamp(26px,4vw,38px);font-weight:700}h2{font-size:21px;font-weight:650}h3{font-size:16px;font-weight:650}
+p{margin:0 0 .6em}a{color:var(--sky)}
+.mono,.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}.small{font-size:13px}.tiny{font-size:12px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:18px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:10px}.brand b{font-family:var(--f-display);font-size:20px;letter-spacing:-.02em}
+.brand span{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);display:flex;gap:4px;overflow-x:auto;padding:10px 0;margin-bottom:18px;border-bottom:1px solid var(--line);scrollbar-width:thin}
+.tab{flex:none;border:0;background:transparent;color:var(--muted);font:600 14px var(--f-body);padding:8px 14px;border-radius:8px;cursor:pointer}
+.tab:hover{color:var(--fg)}.tab.on{background:var(--accent);color:var(--accent-ink)}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--sky);outline-offset:2px}
+.btn{border:1px solid var(--line);background:var(--panel2);color:var(--fg);font:600 14px var(--f-body);padding:9px 15px;border-radius:8px;cursor:pointer}
+.btn:hover{border-color:var(--muted)}.btn.pri{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.sm{padding:5px 10px;font-size:13px}.btn.bad{color:var(--bad)}.btn[disabled]{opacity:.45;cursor:default}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.between{justify-content:space-between}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.grid.t4{grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr))}
+.col{display:flex;flex-direction:column;gap:14px;min-width:0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;min-width:0}
+.card.flat{background:transparent}.card h3{margin-bottom:10px}
+.hero{display:grid;gap:16px;grid-template-columns:1.4fr 1fr;align-items:stretch;margin-bottom:14px}
+@media(max-width:760px){.hero{grid-template-columns:1fr}}
+.count{display:flex;align-items:baseline;gap:8px}.count .n{font:700 56px var(--f-mono);color:var(--accent);line-height:1}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.tile .v{font:700 26px var(--f-mono)}.tile .l{font-size:12px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.chip{display:inline-block;font:600 11px var(--f-mono);letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:99px;border:1px solid currentColor}
+.chip.good{color:var(--good)}.chip.bad{color:var(--bad)}.chip.sky{color:var(--sky)}.chip.mut{color:var(--muted)}.chip.acc{color:var(--accent)}
+.bar{height:8px;border-radius:99px;background:var(--panel2);overflow:hidden}.bar i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.bar.good i{background:var(--good)}.bar.bad i{background:var(--bad)}.bar.sky i{background:var(--sky)}
+table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:middle}
+th{font:600 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.scroll{overflow-x:auto}
+.task{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line)}.task:last-child{border:0}
+.task input{margin-top:4px;width:18px;height:18px;accent-color:var(--accent)}
+.task.done .t{text-decoration:line-through;color:var(--muted)}
+.task .t{flex:1;min-width:0}.task .m{font:12px var(--f-mono);color:var(--muted);white-space:nowrap}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.pill{border:1px solid var(--line);background:var(--panel);color:var(--fg);padding:6px 12px;border-radius:99px;font:600 13px var(--f-body);cursor:pointer}
+.pill.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.pill .d{display:inline-block;width:7px;height:7px;border-radius:50%;margin-left:6px;background:var(--line)}.pill .d.ok{background:var(--good)}
+.lesson ul{padding-left:20px;margin:0 0 14px}.lesson li{margin-bottom:7px}
+.fm{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:14px}
+.fm div{padding:8px 12px;border-bottom:1px solid var(--line);font-size:14px}.fm div:nth-last-child(-n+2){border-bottom:0}
+.fm div:nth-child(odd){background:var(--panel2);color:var(--muted)}.fm div:nth-child(even){font-family:var(--f-mono);font-size:13px}
+.q{white-space:pre-line;font-size:17px;line-height:1.55;margin:0 0 14px}
+.dtc{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:14px;font-size:14px}
+.dtc ol{margin:8px 0 0;padding-left:20px}.dt{margin-top:8px}.dt th,.dt td{padding:5px 10px}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;background:var(--panel2);color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:11px 14px;font:15px var(--f-body);cursor:pointer}
+.opt:hover{border-color:var(--muted)}.opt b{font:600 13px var(--f-mono);color:var(--muted);flex:none;width:18px;margin-top:2px}
+.opt.sel{border-color:var(--sky);background:color-mix(in srgb,var(--sky) 14%,var(--panel2))}
+.opt.right{border-color:var(--good);background:color-mix(in srgb,var(--good) 16%,var(--panel2))}
+.opt.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 16%,var(--panel2))}
+.exp{margin-top:14px;padding:12px 14px;border-left:3px solid var(--accent);background:var(--panel2);border-radius:0 10px 10px 0;font-size:14px}
+.exam{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:14px;align-items:start}
+@media(max-width:860px){.exam{grid-template-columns:1fr}}
+.timer{font:700 22px var(--f-mono);color:var(--accent)}.timer.low{color:var(--bad)}
+.pal{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:6px}
+.pn{height:38px;border-radius:8px;border:1px solid var(--line);background:var(--panel2);color:var(--fg);font:600 13px var(--f-mono);cursor:pointer;position:relative}
+.pn.na{border-color:var(--bad);color:var(--bad)}.pn.ans{background:var(--good);border-color:var(--good);color:#06150e}
+.pn.mark{border-color:var(--sky);color:var(--sky);border-style:dashed}.pn.ansmark{background:var(--good);border:2px dashed var(--sky);color:#06150e}
+.pn.cur{outline:2px solid var(--accent);outline-offset:1px}
+.leg{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--muted)}.leg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:4px;vertical-align:-2px;border:1px solid var(--line)}
+.ex-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.fcard{min-height:200px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:10px;padding:26px;cursor:pointer;font-size:18px}
+.sel-in,input[type=text],input[type=date],input[type=number],textarea,select{background:var(--panel2);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:14px var(--f-body);max-width:100%}
+textarea{width:100%;min-height:80px}
+label.chk{display:flex;gap:8px;align-items:center;padding:6px 0}
+.svg text{fill:var(--muted);font:11px var(--f-mono)}.svg .ax{stroke:var(--line);stroke-width:1}.svg .bar1{fill:var(--accent)}.svg .ln{stroke:var(--sky);stroke-width:2;fill:none}.svg .dot{fill:var(--sky)}.svg .grid{stroke:var(--line);stroke-dasharray:3 3}
+.notice{border:1px dashed var(--line);border-radius:10px;padding:12px 14px;color:var(--muted);font-size:14px}
+.coach{display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap;padding:12px 0;border-bottom:1px solid var(--line)}.coach:last-child{border:0}.coach .w{flex:1;min-width:200px}
+.scorebig{font:700 48px var(--f-mono);color:var(--accent);line-height:1}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:600;z-index:40}
+.sr{position:absolute;left:-9999px}
+@media(prefers-reduced-motion:no-preference){.card,.tile{transition:border-color .15s}}
+</style>
+</head>
+<body>
+<div id="root"><p style="padding:24px">Loading your prep desk...</p></div>
+<script>
+/* Handwritten question banks: [question, [options], correctIndex, explanation] */
+window.RRB_BANK={
+blood:[
+["Pointing to a man, a woman said, \"His mother is the only daughter of my mother.\" How is the woman related to the man?",["Mother","Sister","Aunt","Grandmother"],0,"The only daughter of the woman's mother is the woman herself, so she is the man's mother."],
+["A is the brother of B. B is the sister of C. C is the father of D. How is A related to D?",["Uncle","Father","Brother","Cousin"],0,"A, B and C are siblings. C is D's father, so A is D's uncle."],
+["Pointing to a photograph, Rahul said, \"She is the daughter of my grandfather's only son.\" How is the girl related to Rahul?",["Sister","Cousin","Niece","Aunt"],0,"Rahul's grandfather's only son is Rahul's father. His daughter is Rahul's sister."],
+["X is the son of Y. Y is the sister of Z. Z is the father of W. How is X related to W?",["Cousin","Brother","Uncle","Nephew"],0,"X's mother Y is the sister of W's father Z, so X and W are cousins."],
+["Introducing a man, a woman said, \"He is the only son of my mother's father.\" How is the man related to the woman?",["Maternal uncle","Father","Brother","Cousin"],0,"Mother's father's only son is the mother's brother, i.e. the woman's maternal uncle."],
+["A is B's sister. C is B's mother. D is C's father. E is D's mother. How is A related to D?",["Granddaughter","Daughter","Sister","Niece"],0,"A is C's daughter. D is C's father, so A is D's granddaughter."],
+["Using the same family (A is B's sister, C is B's mother, D is C's father, E is D's mother), how is E related to A?",["Great-grandmother","Grandmother","Aunt","Mother"],0,"E is D's mother, D is C's father, C is A's mother. So E is A's great-grandmother."],
+["P is the mother of Q. Q is the sister of R. R is the father of S. How is P related to S?",["Grandmother","Mother","Aunt","Sister"],0,"Q and R are P's children. R is S's father, so P is S's grandmother."],
+["Pointing to a woman, Suresh said, \"She is the wife of my father's only brother.\" How is she related to Suresh?",["Aunt","Mother","Sister","Cousin"],0,"Father's brother's wife is Suresh's aunt."],
+["If A is the brother of B, B is the sister of C, and C is the mother of D, how is D related to A?",["Nephew or niece","Son","Brother","Cousin"],0,"A is C's brother. C is D's mother, so D is A's nephew or niece."]],
+err:[
+["Find the part with an error.",["Each of the boys","have finished","his homework","No error"],1,"'Each' takes a singular verb: 'has finished'."],
+["Find the part with an error.",["Neither of the two answers","were correct","in the test","No error"],1,"'Neither of' takes a singular verb: 'was correct'."],
+["Find the part with an error.",["He is senior","than me","by five years","No error"],1,"'Senior' is followed by 'to', not 'than': 'senior to me'."],
+["Find the part with an error.",["She prefers tea","than coffee","in the morning","No error"],1,"'Prefer' is followed by 'to': 'prefers tea to coffee'."],
+["Find the part with an error.",["I have been working","here since","five years","No error"],1,"Use 'for' with a period of time: 'for five years'."],
+["Find the part with an error.",["Hardly had he reached","than the train","left the station","No error"],1,"'Hardly' pairs with 'when': 'when the train left'."],
+["Find the part with an error.",["The news you gave me","were shocking","to all of us","No error"],1,"'News' is singular: 'was shocking'."],
+["Find the part with an error.",["One of my friends","are working","in a bank","No error"],1,"'One of my friends' takes a singular verb: 'is working'."],
+["Find the part with an error.",["He did not know","where was","the bank","No error"],1,"Indirect questions keep statement order: 'where the bank was'."],
+["Find the part with an error.",["Unless you will work hard","you cannot","succeed in life","No error"],0,"After 'unless' use the present tense: 'Unless you work hard'."],
+["Find the part with an error.",["The teacher as well as","the students","were present","No error"],2,"With 'as well as', the verb agrees with the first subject 'teacher': 'was present'."],
+["Find the part with an error.",["She has been","living in Mumbai","from 2015","No error"],2,"Use 'since' with a point in time: 'since 2015'."],
+["Find the part with an error.",["Mathematics are","a difficult subject","for many students","No error"],0,"'Mathematics' is singular: 'Mathematics is'."],
+["Find the part with an error.",["I could not attend","the meeting because","of my illness","No error"],3,"The sentence is correct."]],
+fib:[
+["He is fond ____ music.",["of","to","for","with"],0,"'Fond of' is the correct collocation."],
+["The bank has ____ the loan to Mr. Rao.",["sanctioned","sanction","sanctioning","sanctions"],0,"The present perfect 'has' needs the past participle: sanctioned."],
+["Neither the manager nor his assistants ____ present.",["were","was","is","has been"],0,"With 'neither…nor' the verb agrees with the nearer subject 'assistants' (plural)."],
+["He has been living here ____ 2010.",["since","for","from","by"],0,"'Since' is used with a point in time."],
+["If I ____ you, I would accept the offer.",["were","was","am","be"],0,"In an unreal condition use 'were' for all subjects."],
+["She is ____ honest woman.",["an","a","the","no article"],0,"'Honest' begins with a vowel sound, so use 'an'."],
+["The train had left ____ I reached the station.",["before","until","after","unless"],0,"The train left earlier than my arrival, so 'before' fits."],
+["He insisted ____ paying the bill.",["on","to","for","at"],0,"'Insist on' is the correct phrasal verb."],
+["Not only did he fail, ____ he was also expelled.",["but","and","or","so"],0,"'Not only … but also' is a correlative pair."],
+["The doctor advised him to refrain ____ smoking.",["from","off","to","against"],0,"'Refrain from' is the correct usage."],
+["We have ____ time left; let us hurry.",["little","few","many","a few"],0,"'Little' is used with uncountable nouns and means hardly any."],
+["She speaks as if she ____ everything.",["knew","knows","known","know"],0,"'As if' with an unreal comparison takes the past tense."],
+["The customers were satisfied ____ the service.",["with","by","on","to"],0,"'Satisfied with' is the correct collocation."],
+["He is the ____ of the two brothers.",["taller","tallest","more tall","most tall"],0,"Comparing two persons needs the comparative: taller."]],
+vocab:[
+["Choose the synonym of PRUDENT.",["Careful","Reckless","Lazy","Greedy"],0,"Prudent means sensible and careful."],
+["Choose the synonym of CANDID.",["Frank","Secretive","Rude","Shy"],0,"Candid means open and honest."],
+["Choose the antonym of SCARCE.",["Abundant","Rare","Costly","Limited"],0,"Scarce means in short supply; abundant is the opposite."],
+["Choose the antonym of EXPAND.",["Contract","Grow","Extend","Increase"],0,"Expand means to grow bigger; contract means to shrink."],
+["Choose the synonym of VERBOSE.",["Wordy","Silent","Brief","Clear"],0,"Verbose means using more words than needed."],
+["Choose the antonym of TRANSPARENT.",["Opaque","Clear","Thin","Bright"],0,"Transparent means see-through; opaque is the opposite."],
+["Choose the synonym of DILIGENT.",["Hardworking","Careless","Slow","Clever"],0,"Diligent means showing steady effort."],
+["Choose the antonym of EPHEMERAL.",["Permanent","Brief","Fragile","Quick"],0,"Ephemeral means short-lived; permanent is the opposite."],
+["Choose the synonym of MITIGATE.",["Alleviate","Worsen","Ignore","Create"],0,"Mitigate means to make less severe."],
+["Choose the antonym of BENEVOLENT.",["Malevolent","Kind","Generous","Humble"],0,"Benevolent means well-meaning; malevolent means wishing harm."],
+["Choose the synonym of OBSOLETE.",["Outdated","Modern","Useful","Fresh"],0,"Obsolete means no longer in use."],
+["One word for: a person who loves books.",["Bibliophile","Philanthropist","Misanthrope","Egoist"],0,"A bibliophile is a lover of books."]],
+idiom:[
+["What does 'to burn the midnight oil' mean?",["To work late into the night","To waste fuel","To start a fire","To sleep early"],0,"It means working or studying late at night."],
+["What does 'a blessing in disguise' mean?",["Something good that seemed bad at first","A hidden danger","A religious ritual","A costly mistake"],0,"A misfortune that turns out to be beneficial."],
+["What does 'once in a blue moon' mean?",["Very rarely","Every month","At night","Very often"],0,"It describes something that happens very rarely."],
+["What does 'to bite the bullet' mean?",["To face a painful situation bravely","To eat quickly","To fight","To give up"],0,"It means to endure something unpleasant with courage."],
+["What does 'a piece of cake' mean?",["A very easy task","A small gift","A sweet dish","A difficult exam"],0,"It refers to something very easy."],
+["What does 'to break the ice' mean?",["To start a conversation in a social setting","To melt ice","To end a friendship","To cause damage"],0,"It means to ease initial awkwardness."],
+["What does 'cost an arm and a leg' mean?",["Be very expensive","Cause an injury","Be free","Be of low quality"],0,"It means costing a very high price."],
+["What does 'under the weather' mean?",["Slightly ill","Outdoors","Very happy","Standing in rain"],0,"It means feeling unwell."],
+["What does 'to let the cat out of the bag' mean?",["To reveal a secret","To free a pet","To lose a bet","To cause confusion"],0,"It means to disclose a secret by mistake."],
+["What does 'to hit the nail on the head' mean?",["To say exactly the right thing","To make an error","To start construction","To get angry"],0,"It means to be exactly right about something."]],
+bank:[
+["In which year was the Reserve Bank of India established?",["1935","1947","1949","1969"],0,"RBI began operations on 1 April 1935 under the RBI Act, 1934."],
+["The Reserve Bank of India was nationalised in:",["1949","1935","1955","1969"],0,"RBI was nationalised on 1 January 1949."],
+["The repo rate is the rate at which:",["RBI lends short-term funds to commercial banks","Banks lend to the public","RBI borrows from banks","Banks lend to each other"],0,"Repo = repurchase agreement; RBI lends against government securities."],
+["CRR is the percentage of a bank's NDTL that must be kept:",["As cash with the RBI","As gold with the bank","In government securities","In other banks"],0,"Cash Reserve Ratio is maintained as cash balance with RBI."],
+["SLR must be maintained by banks in the form of:",["Liquid assets such as cash, gold and government securities","Only cash with RBI","Foreign currency","Real estate"],0,"Statutory Liquidity Ratio is held with the bank itself in liquid assets."],
+["Which was the first Regional Rural Bank in India?",["Prathama Bank","Sarva UP Gramin Bank","Kosi Kshetriya Gramin Bank","Baroda Gramin Bank"],0,"Prathama Bank was set up on 2 October 1975 in Moradabad, UP."],
+["Regional Rural Banks were set up under the RRB Act of:",["1976","1949","1969","1982"],0,"The Regional Rural Banks Act was passed in 1976."],
+["The sponsor bank holds what share in a Regional Rural Bank?",["35%","50%","15%","25%"],0,"Ownership: Centre 50%, State 15%, sponsor bank 35%."],
+["NABARD was established in:",["1982","1975","1969","1991"],0,"NABARD was set up on 12 July 1982."],
+["Where is the headquarters of NABARD?",["Mumbai","New Delhi","Lucknow","Hyderabad"],0,"NABARD is headquartered in Mumbai."],
+["The Imperial Bank of India became the State Bank of India in:",["1955","1935","1949","1969"],0,"The SBI Act was passed in 1955."],
+["How many banks were nationalised in July 1969?",["14","6","20","10"],0,"Fourteen major commercial banks were nationalised in 1969."],
+["What is the minimum amount for an RTGS transaction?",["₹2 lakh","₹1 lakh","₹50,000","No minimum"],0,"RTGS handles large-value payments with a ₹2 lakh minimum."],
+["An IFSC code has how many characters?",["11","9","12","10"],0,"IFSC has 11 characters: 4 bank letters, a zero, and 6 branch characters."],
+["A MICR code on a cheque has how many digits?",["9","11","6","12"],0,"MICR code is a 9-digit code."],
+["The Banking Regulation Act was passed in:",["1949","1934","1976","1991"],0,"The Banking Regulation Act, 1949 governs banking companies in India."],
+["Which of these can a payments bank NOT do?",["Provide loans","Accept demand deposits","Issue debit cards","Offer remittance services"],0,"Payments banks cannot lend or issue credit cards."],
+["Who regulates Non-Banking Financial Companies (NBFCs) in India?",["RBI","SEBI","IRDAI","NABARD"],0,"NBFCs are regulated by the RBI."],
+["UPI was developed by:",["NPCI","RBI","SEBI","NABARD"],0,"National Payments Corporation of India built the Unified Payments Interface."],
+["Currency notes of ₹1 are issued by:",["Ministry of Finance, Government of India","RBI","SBI","NPCI"],0,"All other notes are issued by RBI; the ₹1 note and coins are issued under the Finance Ministry."],
+["An account becomes an NPA when interest or instalment remains overdue for more than:",["90 days","30 days","60 days","180 days"],0,"A loan turns non-performing after being overdue for over 90 days."],
+["The CIBIL score ranges from:",["300 to 900","0 to 100","100 to 500","500 to 1000"],0,"CIBIL scores range from 300 to 900."],
+["The normal validity period of a cheque is:",["3 months","6 months","1 month","1 year"],0,"A cheque is valid for 3 months from the date of issue."],
+["Basel norms are issued by:",["Basel Committee on Banking Supervision","IMF","World Bank","RBI"],0,"The Basel Committee operates under the Bank for International Settlements."],
+["MCLR was introduced by RBI in:",["April 2016","April 2010","April 2005","April 2020"],0,"MCLR replaced the base rate system from 1 April 2016."],
+["KYC stands for:",["Know Your Customer","Keep Your Cash","Know Your Credit","Key Your Code"],0,"KYC is the identity verification norm for customers."],
+["NEFT stands for:",["National Electronic Funds Transfer","National Easy Fund Transfer","Net Electronic Funds Tool","National Electronic Fee Transaction"],0,"NEFT is the National Electronic Funds Transfer system."],
+["LAF in banking stands for:",["Liquidity Adjustment Facility","Loan Adjustment Fund","Lending Asset Framework","Liquid Asset Fund"],0,"LAF includes repo and reverse repo operations."],
+["The Kisan Credit Card scheme mainly provides:",["Short-term credit to farmers","Housing loans","Education loans","Gold loans to traders"],0,"KCC gives farmers timely credit for crop and related needs."],
+["The RBI Act was passed in:",["1934","1949","1955","1969"],0,"The Reserve Bank of India Act was passed in 1934."]],
+fin:[
+["SEBI regulates:",["Securities markets","Insurance","Banks","Pension funds"],0,"The Securities and Exchange Board of India regulates securities markets."],
+["Where is IRDAI headquartered?",["Hyderabad","Mumbai","New Delhi","Bengaluru"],0,"IRDAI is headquartered in Hyderabad."],
+["Which body regulates the National Pension System (NPS)?",["PFRDA","IRDAI","SEBI","RBI"],0,"Pension Fund Regulatory and Development Authority regulates NPS."],
+["Atal Pension Yojana guarantees a monthly pension between:",["₹1,000 and ₹5,000","₹500 and ₹2,000","₹5,000 and ₹10,000","₹2,000 and ₹8,000"],0,"APY offers fixed pensions of ₹1,000 to ₹5,000 per month after age 60."],
+["Pradhan Mantri Jan Dhan Yojana was launched on:",["28 August 2014","15 August 2015","2 October 2014","1 April 2016"],0,"PMJDY was launched on 28 August 2014 for financial inclusion."],
+["PMJJBY provides a life insurance cover of:",["₹2 lakh","₹1 lakh","₹5 lakh","₹10 lakh"],0,"Pradhan Mantri Jeevan Jyoti Bima Yojana gives ₹2 lakh life cover."],
+["PMSBY is an insurance scheme for:",["Accidental death and disability","Crop loss","Health surgery","Vehicle theft"],0,"Pradhan Mantri Suraksha Bima Yojana covers accidental death and disability."],
+["Sukanya Samriddhi Yojana is a savings scheme for:",["The girl child","Senior citizens","Farmers","Soldiers"],0,"It was launched in 2015 under Beti Bachao Beti Padhao."],
+["Under PM Mudra Yojana, 'Kishor' covers loans of:",["₹50,001 to ₹5 lakh","Up to ₹50,000","₹5 lakh to ₹10 lakh","Above ₹10 lakh"],0,"Shishu: up to ₹50,000; Kishor: ₹50,001–₹5 lakh; Tarun: ₹5–10 lakh."],
+["The Sensex is the index of which exchange?",["BSE","NSE","MCX","NCDEX"],0,"The Sensex tracks 30 large companies listed on BSE."],
+["How many companies are in the Nifty 50?",["50","30","100","500"],0,"Nifty 50 is the NSE's benchmark index of 50 stocks."],
+["GST was introduced in India on:",["1 July 2017","1 April 2016","1 January 2018","1 April 2015"],0,"GST came into force on 1 July 2017."],
+["The financial year in India runs from:",["1 April to 31 March","1 January to 31 December","1 July to 30 June","1 October to 30 September"],0,"The Indian financial year is April to March."],
+["The Finance Commission is constituted under which Article?",["Article 280","Article 112","Article 266","Article 148"],0,"Article 280 provides for the Finance Commission."],
+["Treasury Bills are issued for which tenors?",["91, 182 and 364 days","1, 2 and 3 years","7, 14 and 28 days","5 and 10 years"],0,"T-Bills are short-term government securities of 91, 182 and 364 days."],
+["The RBI's inflation target under the flexible inflation targeting framework is:",["4% with a band of ±2%","2% with ±1%","6% fixed","5% with ±3%"],0,"CPI inflation target is 4% within a 2–6% band."],
+["The Monetary Policy Committee has how many members?",["6","5","9","12"],0,"MPC has six members: three from RBI and three external members."],
+["Which replaced the Planning Commission in 2015?",["NITI Aayog","Finance Commission","GST Council","Economic Advisory Council"],0,"NITI Aayog was formed on 1 January 2015."],
+["A Demat account is used to hold:",["Securities in electronic form","Only cash","Gold coins","Insurance policies"],0,"Demat stands for dematerialised account."],
+["An IPO is an issue made in the:",["Primary market","Secondary market","Call money market","Forex market"],0,"Initial public offerings are sold in the primary market."]],
+org:[
+["The IMF is headquartered in:",["Washington, D.C.","Geneva","New York","Paris"],0,"The International Monetary Fund is based in Washington, D.C."],
+["The World Bank is headquartered in:",["Washington, D.C.","Basel","Manila","London"],0,"The World Bank Group's headquarters is in Washington, D.C."],
+["The Asian Development Bank (ADB) is headquartered in:",["Manila","Tokyo","Beijing","Singapore"],0,"ADB is based in Manila, Philippines."],
+["The Asian Infrastructure Investment Bank (AIIB) is headquartered in:",["Beijing","Manila","Shanghai","Mumbai"],0,"AIIB's headquarters is in Beijing."],
+["The New Development Bank (BRICS bank) is headquartered in:",["Shanghai","Moscow","New Delhi","Brasilia"],0,"NDB is based in Shanghai."],
+["The World Trade Organization (WTO) is headquartered in:",["Geneva","Vienna","Paris","New York"],0,"The WTO is based in Geneva, Switzerland."],
+["The Bank for International Settlements (BIS) is headquartered in:",["Basel","Geneva","Zurich","Brussels"],0,"BIS is located in Basel, Switzerland."],
+["OPEC has its headquarters in:",["Vienna","Geneva","Riyadh","Dubai"],0,"OPEC is headquartered in Vienna, Austria."],
+["SIDBI is headquartered in:",["Lucknow","Mumbai","Pune","Kolkata"],0,"Small Industries Development Bank of India is based in Lucknow."],
+["Where is the headquarters of SEBI?",["Mumbai","New Delhi","Kolkata","Chennai"],0,"SEBI is headquartered in Mumbai (BKC)."],
+["Where is the headquarters of NPCI?",["Mumbai","New Delhi","Bengaluru","Hyderabad"],0,"NPCI is headquartered in Mumbai."],
+["PFRDA is headquartered in:",["New Delhi","Mumbai","Hyderabad","Pune"],0,"PFRDA is based in New Delhi."],
+["Canara Bank has its headquarters in:",["Bengaluru","Mangaluru","Chennai","Mumbai"],0,"Canara Bank's head office is in Bengaluru."],
+["Indian Overseas Bank has its headquarters in:",["Chennai","Mumbai","Kolkata","Madurai"],0,"IOB is headquartered in Chennai."],
+["UCO Bank has its headquarters in:",["Kolkata","Mumbai","Patna","Chennai"],0,"UCO Bank is headquartered in Kolkata."],
+["Bank of Maharashtra has its headquarters in:",["Pune","Mumbai","Nagpur","Nashik"],0,"Bank of Maharashtra is headquartered in Pune."],
+["Punjab National Bank has its headquarters in:",["New Delhi","Chandigarh","Amritsar","Ludhiana"],0,"PNB's head office is in New Delhi."],
+["Indian Bank has its headquarters in:",["Chennai","Mumbai","Bengaluru","Kochi"],0,"Indian Bank is headquartered in Chennai."],
+["The headquarters of the United Nations is in:",["New York","Geneva","Vienna","Brussels"],0,"The UN headquarters is in New York City."],
+["The headquarters of SBI is in:",["Mumbai","New Delhi","Kolkata","Chennai"],0,"State Bank of India's corporate centre is in Mumbai."]],
+cbasic:[
+["Which part is known as the 'brain' of the computer?",["CPU","Monitor","Keyboard","Hard disk"],0,"The Central Processing Unit processes instructions."],
+["Which of these is volatile memory?",["RAM","ROM","Hard disk","Flash drive"],0,"RAM loses its contents when power is off."],
+["One byte consists of how many bits?",["8","4","16","2"],0,"1 byte = 8 bits."],
+["1 KB equals how many bytes?",["1024","1000","512","2048"],0,"In computing, 1 KB = 1024 bytes."],
+["Who is known as the father of the computer?",["Charles Babbage","Alan Turing","Bill Gates","Tim Berners-Lee"],0,"Charles Babbage designed the Analytical Engine."],
+["Which of these is an output device?",["Monitor","Keyboard","Scanner","Mouse"],0,"A monitor displays output."],
+["Third-generation computers used:",["Integrated circuits","Vacuum tubes","Transistors","Microprocessors"],0,"1G: vacuum tubes, 2G: transistors, 3G: ICs, 4G: microprocessors."],
+["Which memory is the fastest among these?",["Cache","RAM","Hard disk","Pen drive"],0,"Cache sits closest to the CPU and is faster than RAM."],
+["The base of the binary number system is:",["2","8","10","16"],0,"Binary uses digits 0 and 1."],
+["The base of the hexadecimal number system is:",["16","8","2","10"],0,"Hexadecimal uses 0–9 and A–F."],
+["PARAM series supercomputers were developed by:",["C-DAC","ISRO","DRDO","BARC"],0,"C-DAC built the PARAM supercomputers."],
+["An operating system is:",["System software","Application software","Hardware","A programming language"],0,"The OS manages hardware and runs applications."],
+["The ALU of the CPU performs:",["Arithmetic and logic operations","Data storage","Printing","Networking"],0,"ALU = Arithmetic Logic Unit."],
+["A hard disk is an example of:",["Secondary storage","Primary memory","Cache memory","Output device"],0,"Hard disks are non-volatile secondary storage."]],
+csoft:[
+["Which shortcut copies the selected text?",["Ctrl + C","Ctrl + V","Ctrl + X","Ctrl + Z"],0,"Ctrl+C copy, Ctrl+V paste, Ctrl+X cut, Ctrl+Z undo."],
+["Which shortcut undoes the last action?",["Ctrl + Z","Ctrl + Y","Ctrl + U","Ctrl + A"],0,"Ctrl+Z undoes; Ctrl+Y redoes."],
+["Which key opens the Save As dialog in MS Word?",["F12","F5","F2","F7"],0,"F12 opens Save As in Word."],
+["The default file extension of an MS Excel workbook is:",["xlsx","docx","pptx","txt"],0,"Modern Excel files use .xlsx."],
+["The default file extension of an MS Word document is:",["docx","xlsx","pptx","pdf"],0,"Modern Word files use .docx."],
+["Every formula in Excel begins with:",["=","#","@","$"],0,"A formula starts with an equals sign."],
+["Which Excel function returns the largest value in a range?",["MAX","BIG","TOP","HIGH"],0,"=MAX(range) returns the maximum."],
+["The intersection of a row and a column in a spreadsheet is called:",["A cell","A range","A table","A field"],0,"The cell is identified by a reference such as B3."],
+["Which key starts a slide show from the beginning in PowerPoint?",["F5","F2","F7","F12"],0,"F5 starts the slide show."],
+["Which shortcut selects all content in a document?",["Ctrl + A","Ctrl + S","Ctrl + P","Ctrl + B"],0,"Ctrl+A = Select All."],
+["Ctrl + P is used to:",["Print","Paste","Preview slide","Protect"],0,"Ctrl+P opens the print dialog."],
+["The default file extension of a PowerPoint presentation is:",["pptx","docx","xlsx","jpg"],0,"Modern PowerPoint files use .pptx."],
+["The feature used to send the same letter to many recipients in Word is:",["Mail Merge","Track Changes","Find and Replace","Macro"],0,"Mail Merge personalises a letter for many recipients."],
+["Alt + Tab is used to:",["Switch between open windows","Close a program","Open task manager","Lock the screen"],0,"Alt+Tab cycles through open windows."]],
+cnet:[
+["LAN stands for:",["Local Area Network","Large Area Network","Long Access Network","Linked Area Node"],0,"A LAN connects devices in a small area such as an office."],
+["HTTPS differs from HTTP because it:",["Encrypts data in transit","Is faster only","Needs no browser","Works offline"],0,"HTTPS uses SSL/TLS to encrypt data."],
+["A device that connects two different networks is called a:",["Router","Hub","Repeater","Modem"],0,"A router forwards packets between networks."],
+["A modem converts:",["Digital signals to analog and back","Text to speech","Files to images","AC to DC"],0,"Modem = modulator–demodulator."],
+["DNS translates:",["Domain names to IP addresses","IP to MAC addresses","Files to folders","Emails to text"],0,"DNS is the internet's phonebook."],
+["A firewall is used to:",["Filter network traffic and block unauthorised access","Speed up the internet","Compress files","Clean disks"],0,"Firewalls monitor and control traffic."],
+["Attempting to steal personal details through fake emails or websites is called:",["Phishing","Spooling","Booting","Cloning"],0,"Phishing tricks users into revealing information."],
+["Malware that locks your files and demands payment is called:",["Ransomware","Adware","Spyware","Freeware"],0,"Ransomware encrypts files for ransom."],
+["A program that looks useful but hides malicious code is a:",["Trojan horse","Cookie","Compiler","Patch"],0,"A Trojan disguises itself as legitimate software."],
+["Who invented the World Wide Web?",["Tim Berners-Lee","Vint Cerf","Bill Gates","Steve Jobs"],0,"Tim Berners-Lee proposed the WWW in 1989."],
+["In an email, the recipients in 'BCC' are:",["Hidden from other recipients","Visible to all","Only the senders","Blocked"],0,"BCC = blind carbon copy."],
+["An IP address uniquely identifies:",["A device on a network","A website's colour","A file's size","A user's password"],0,"IP = Internet Protocol address."],
+["A VPN is mainly used to:",["Create a secure, private connection over the internet","Increase RAM","Print remotely","Erase viruses"],0,"VPN = Virtual Private Network."],
+["Unwanted bulk email is known as:",["Spam","Cookie","Bug","Patch"],0,"Spam is unsolicited bulk messaging."]]
+};
+</script>
+<script>
+/* Question generators and mock builder. Every answer is computed, never typed in. */
+(function(root){
+const SEC={simp:'Quant',ser:'Quant',quad:'Quant',pct:'Quant',rat:'Quant',avg:'Quant',pl:'Quant',si:'Quant',tw:'Quant',tsd:'Quant',di:'Quant',
+ ineq:'Reasoning',syl:'Reasoning',seat:'Reasoning',blood:'Reasoning',dir:'Reasoning',code:'Reasoning',rank:'Reasoning',aser:'Reasoning',
+ err:'English',fib:'English',vocab:'English',idiom:'English',
+ bank:'GA',fin:'GA',org:'GA',cbasic:'Computer',csoft:'Computer',cnet:'Computer'};
+
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function RNG(seed){const r=mulberry((seed>>>0)||1);
+ return {f:r,int:(a,b)=>a+Math.floor(r()*(b-a+1)),pick:a=>a[Math.floor(r()*a.length)],chance:p=>r()<p,
+ shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}}}
+function hs(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return(h>>>0).toString(36)}
+const gcd=(a,b)=>b?gcd(b,a%b):a;
+function tidy(v,dec){let s=dec?v.toFixed(dec):String(Math.round(v));if(dec)s=s.replace(/\.?0+$/,'');return s}
+
+function numOpts(R,c,o){o=o||{};
+ const dec=o.dec!==undefined?o.dec:(Math.abs(c-Math.round(c))<1e-9?0:2);
+ const cv=+c.toFixed(dec);const base=Math.max(1,Math.abs(cv));
+ const step=o.step||(dec?Math.max(0.5,Math.round(base*0.08*2)/2):Math.max(1,Math.round(base*0.07)));
+ const set=new Set([cv]);let g=0;
+ while(set.size<5&&g++<300){const k=R.int(1,4)*(R.chance(.5)?1:-1);const v=+(cv+k*step).toFixed(dec);if(v<=0&&cv>0&&!o.neg)continue;set.add(v)}
+ let j=1;while(set.size<5)set.add(+(cv+(j++)*step).toFixed(dec));
+ const arr=[...set].sort((a,b)=>a-b);
+ const f=o.f||(v=>(o.pre||'')+tidy(v,dec)+(o.u||''));
+ return{o:arr.map(f),a:arr.indexOf(cv)}}
+function mk(R,t,q,val,e,o){const r=numOpts(R,val,o);return{t,s:SEC[t],q,o:r.o,a:r.a,e}}
+function mkS(R,t,q,correct,wrongs,e){const ws=[...new Set(wrongs)].filter(w=>w!==correct);
+ const o=R.shuffle(ws).slice(0,4);o.push(correct);const sh=R.shuffle(o);return{t,s:SEC[t],q,o:sh,a:sh.indexOf(correct),e}}
+const sgn=(v,u)=>(v>0?'+':v<0?'−':'')+tidy(Math.abs(v),Number.isInteger(v)?0:2)+(u||'');
+const rt=(a,b)=>{const g=gcd(a,b);return(a/g)+':'+(b/g)};
+
+const T={};
+/* ---------- QUANT ---------- */
+T.simp=R=>{const m=R.int(1,3);
+ if(m===1){const a=R.int(12,45),b=R.int(6,19),d=R.pick([2,3,4,5,6,8]),c=d*R.int(5,30),e=R.int(10,90);const v=a*b-c/d+e;
+  return mk(R,'simp',`${a} × ${b} − ${c} ÷ ${d} + ${e} = ?`,v,`Multiply and divide first: ${a}×${b} = ${a*b} and ${c}÷${d} = ${c/d}. Then ${a*b} − ${c/d} + ${e} = ${v}.`)}
+ if(m===2){const p=R.pick([10,15,20,25,30,35,40,45]),p2=R.pick([5,10,15,20,25,50]),A=R.int(2,30)*20,B=R.int(2,30)*20;const v=p*A/100+p2*B/100;
+  return mk(R,'simp',`${p}% of ${A} + ${p2}% of ${B} = ?`,v,`${p}% of ${A} = ${p*A/100}; ${p2}% of ${B} = ${p2*B/100}. Sum = ${v}.`)}
+ const a=R.int(21,60),b=R.int(11,a-3);
+ return mk(R,'simp',`(${a}² − ${b}²) ÷ (${a} + ${b}) = ?`,a-b,`Use a² − b² = (a+b)(a−b). So the expression = a − b = ${a} − ${b} = ${a-b}.`)};
+
+T.ser=R=>{const m=R.int(1,5);let seq=[],rule='';const n=6;
+ if(m===1){const a=R.int(2,20),d=R.int(2,6),s=R.int(1,4);let x=a;seq=[x];for(let i=0;i<n-1;i++){x+=d+s*i;seq.push(x)}rule=`The differences are ${d}, ${d+s}, ${d+2*s}, … Each difference grows by ${s}.`}
+ else if(m===2){const k=R.int(2,3),c=R.int(-3,5);let x=R.int(2,6);seq=[x];for(let i=0;i<n-1;i++){x=x*k+c;seq.push(x)}rule=`Each term = previous × ${k} ${c<0?'−':'+'} ${Math.abs(c)}.`}
+ else if(m===3){const s=R.int(3,12),c=R.int(-5,8);seq=[];for(let i=0;i<n;i++)seq.push((s+i)**2+c);rule=`Terms are consecutive squares ${c<0?'minus':'plus'} ${Math.abs(c)}: ${s}², ${s+1}², ${s+2}², …`}
+ else if(m===4){let x=R.int(2,5);seq=[x];for(let i=1;i<n;i++){x=x*i;seq.push(x)}rule='Multipliers go ×1, ×2, ×3, ×4, … in order.'}
+ else{const a=R.int(3,15),b=R.int(20,40),da=R.int(2,5),db=R.int(3,7);seq=[];for(let i=0;i<n;i++)seq.push(i%2===0?a+da*(i/2):b+db*((i-1)/2));rule=`Two interleaved series: odd places add ${da} each time, even places add ${db} each time.`}
+ const h=R.int(2,n-1);const val=seq[h];const shown=seq.map((v,i)=>i===h?'?':v).join(', ');
+ return mk(R,'ser',`Find the missing term: ${shown}`,val,`${rule} Missing term = ${val}.`)};
+
+T.quad=R=>{const mkE=(v,r1,r2)=>{const S=r1+r2,P=r1*r2;return`${v}² ${S===0?'':(S>0?'− ':'+ ')+(Math.abs(S)===1?'':Math.abs(S))+v+' '}${P>=0?'+':'−'} ${Math.abs(P)} = 0`.replace(/\s+/g,' ')};
+ for(let g=0;g<50;g++){const X=[R.int(-9,9),R.int(-9,9)],Y=[R.int(-9,9),R.int(-9,9)];if(X.includes(0)||Y.includes(0)||X[0]===X[1]&&R.chance(.7))continue;
+  let rel;const all=f=>X.every(x=>Y.every(y=>f(x,y)));
+  if(all((x,y)=>x>y))rel=0;else if(all((x,y)=>x<y))rel=2;else if(all((x,y)=>x>=y)&&!all((x,y)=>x<=y))rel=1;else if(all((x,y)=>x<=y)&&!all((x,y)=>x>=y))rel=3;else rel=4;
+  if(rel===4&&g<30&&R.chance(.5))continue;
+  const o=['x > y','x ≥ y','x < y','x ≤ y','x = y or no relation'];
+  return{t:'quad',s:'Quant',q:`I. ${mkE('x',X[0],X[1])}\nII. ${mkE('y',Y[0],Y[1])}\nCompare x and y.`,o,a:rel,
+   e:`Roots of I: x = ${X[0]}, ${X[1]}. Roots of II: y = ${Y[0]}, ${Y[1]}. Compare every x with every y: the correct relation is "${o[rel]}".`}}
+ return T.quad(R)};
+
+T.pct=R=>{const m=R.int(1,4);
+ if(m===1){const a=R.pick([10,20,25,30,40]),b=R.pick([10,20,25,50]);const net=a-b-a*b/100;
+  return mk(R,'pct',`The price of an article is increased by ${a}% and then decreased by ${b}%. What is the net percentage change? (+ means increase, − means decrease)`,net,`Net change = ${a} − ${b} − (${a}×${b})/100 = ${tidy(net,Number.isInteger(net)?0:2)}%.`,{neg:true,f:v=>sgn(v,'%'),step:R.pick([2,3,4])})}
+ if(m===2){const p=R.pick([55,60,65,70]),N=R.int(20,200)*50,M=N*(2*p-100)/100;
+  return mk(R,'pct',`In an election between two candidates, the winner got ${p}% of the valid votes and won by ${M} votes. How many valid votes were polled?`,N,`Margin = (2×${p} − 100)% = ${2*p-100}% of total. Total = ${M} ÷ ${2*p-100}% = ${N}.`)}
+ if(m===3){const N=R.int(4,40)*20,p=R.pick([15,25,35,45,55]),y=N*(100+p)/100;
+  return mk(R,'pct',`When a number is increased by ${p}%, it becomes ${y}. What is the number?`,N,`Number × (100+${p})/100 = ${y}. Number = ${y} × 100/${100+p} = ${N}.`)}
+ const p=R.pick([25,60,100,150,300]),v=100*p/(100+p);
+ return mk(R,'pct',`Salary of A is ${p}% more than salary of B. By what percent is B's salary less than A's?`,v,`Required % = ${p}/(100+${p}) × 100 = ${tidy(v,Number.isInteger(v)?0:2)}%.`,{u:'%'})};
+
+T.rat=R=>{const m=R.int(1,3);
+ if(m===1){const a=R.int(2,5),b=R.int(a+1,8),c=R.int(b+1,10),k=R.int(5,40)*10,S=k*(a+b+c);
+  return mk(R,'rat',`₹${S} is divided among A, B and C in the ratio ${a}:${b}:${c}. What is the largest share?`,c*k,`Total parts = ${a+b+c}; one part = ${S}/${a+b+c} = ${k}. Largest share = ${c} × ${k} = ${c*k}.`,{pre:'₹'})}
+ if(m===2){const b=R.int(2,5),a=R.int(b+1,9),k=R.int(2,9),S=k*(a+b);
+  return mk(R,'rat',`The ages of a father and his son are in the ratio ${a}:${b}. The sum of their ages is ${S} years. Find the father's age.`,a*k,`One part = ${S}/${a+b} = ${k}. Father = ${a} × ${k} = ${a*k} years.`)}
+ let p=R.int(2,7),q=R.int(2,7),r=R.int(2,7),s=R.int(2,7);if(p===q)q++;if(r===s)s++;
+ const correct=rt(p*r,q*s);return mkS(R,'rat',`If A:B = ${p}:${q} and B:C = ${r}:${s}, find A:C.`,correct,[rt(p*s,q*r),rt(p*q,r*s),rt(p*r,q+s),rt(q*s,p*r),rt(p+r,q+s),rt(p*s,q*s)],`A:C = (${p}×${r}):(${q}×${s}) = ${correct} after reducing.`)};
+
+T.avg=R=>{const m=R.int(1,4);
+ if(m===1){const N=R.pick([5,8,10,20]),A=R.int(20,45),X=R.int(18,40),d=R.int(1,6),Y=X+N*d;
+  return mk(R,'avg',`The average age of ${N} members of a team is ${A} years. A member aged ${X} years is replaced by a new member aged ${Y} years. What is the new average age?`,A+d,`Change in total = ${Y} − ${X} = ${Y-X}. Change in average = ${Y-X}/${N} = ${d}. New average = ${A+d}.`)}
+ if(m===2){const n=R.pick([15,20,25,30,40,50]);
+  return mk(R,'avg',`What is the average of the first ${n} even natural numbers?`,n+1,`Sum of first n even numbers = n(n+1), so the average = n+1 = ${n+1}.`)}
+ if(m===3){const [a,b]=R.pick([[40,60],[30,60],[20,30],[60,90],[50,75],[45,90],[36,45],[24,40]]);const v=2*a*b/(a+b);
+  return mk(R,'avg',`A car goes from city P to city Q at ${a} km/h and returns by the same route at ${b} km/h. What is the average speed for the whole journey (km/h)?`,v,`For equal distances, average speed = 2ab/(a+b) = 2×${a}×${b}/${a+b} = ${v} km/h.`)}
+ for(let g=0;g<5000;g++){const n=[0,1,2,3,4].map(()=>R.int(10,60));const s5=n.reduce((x,y)=>x+y),s3a=n[0]+n[1]+n[2],s3b=n[2]+n[3]+n[4];
+  if(s5%5||s3a%3||s3b%3)continue;
+  return mk(R,'avg',`The average of five numbers is ${s5/5}. The average of the first three is ${s3a/3} and the average of the last three is ${s3b/3}. What is the third number?`,n[2],`Sum of five = ${s5}. First three = ${s3a}, last three = ${s3b}. Third number counted twice: ${s3a} + ${s3b} − ${s5} = ${n[2]}.`)}
+ return T.avg(R)};
+
+T.pl=R=>{const m=R.int(1,5);
+ if(m===1){const CP=R.int(5,60)*20,p=R.pick([5,10,15,20,25,30,-5,-10,-15,-20]),SP=CP*(100+p)/100;
+  return mk(R,'pl',`An article bought for ₹${CP} is sold at a ${Math.abs(p)}% ${p>0?'profit':'loss'}. What is the selling price?`,SP,`SP = ${CP} × (100 ${p>0?'+':'−'} ${Math.abs(p)})/100 = ₹${SP}.`,{pre:'₹'})}
+ if(m===2){const CP=R.int(5,60)*20,p=R.pick([5,10,15,20,25,30]),SP=CP*(100+p)/100;
+  return mk(R,'pl',`A trader sells an article for ₹${SP} and earns a profit of ${p}%. What is the cost price?`,CP,`CP = SP × 100/(100+${p}) = ${SP} × 100/${100+p} = ₹${CP}.`,{pre:'₹'})}
+ if(m===3){for(let g=0;g<50;g++){const mk1=R.pick([20,25,30,40,50]),d=R.pick([10,20,25]);const v=(100+mk1)*(100-d)/100-100;if(v===0)continue;
+   return mk(R,'pl',`A shopkeeper marks goods ${mk1}% above cost price and then allows a discount of ${d}%. What is his profit or loss percent? (+ profit, − loss)`,v,`Taking CP = 100: MP = ${100+mk1}, SP = ${100+mk1} × ${100-d}% = ${tidy(v+100,Number.isInteger(v)?0:2)}. Profit/loss = ${tidy(v,Number.isInteger(v)?0:2)}%.`,{neg:true,f:x=>sgn(x,'%'),step:R.pick([2,3,4])})}}
+ if(m===4){const p=R.pick([10,20,30,40]),SP=R.int(5,40)*100;
+  return mk(R,'pl',`A man sells two articles at ₹${SP} each. On one he gains ${p}% and on the other he loses ${p}%. What is his overall loss percent?`,p*p/100,`When two items sell at the same price with equal gain and loss %, loss = p²/100 = ${p}²/100 = ${p*p/100}%.`,{u:'%'})}
+ const [d1,d2]=R.pick([[20,10],[25,20],[10,10],[30,20],[50,20],[20,20]]);const v=d1+d2-d1*d2/100;
+ return mk(R,'pl',`Two successive discounts of ${d1}% and ${d2}% are equal to a single discount of:`,v,`Single discount = ${d1} + ${d2} − (${d1}×${d2})/100 = ${tidy(v,Number.isInteger(v)?0:2)}%.`,{u:'%'})};
+
+T.si=R=>{const m=R.int(1,4);
+ if(m===1){const P=R.int(2,40)*500,r=R.pick([4,5,6,8,10,12]),t=R.int(2,5),I=P*r*t/100;
+  return mk(R,'si',`Find the simple interest on ₹${P} at ${r}% per annum for ${t} years.`,I,`SI = PRT/100 = ${P}×${r}×${t}/100 = ₹${I}.`,{pre:'₹'})}
+ if(m===2){const P=R.int(2,40)*500,r=R.pick([4,5,6,8,10,12]),t=R.int(2,5),A=P+P*r*t/100;
+  return mk(R,'si',`A sum of ₹${P} amounts to ₹${A} in ${t} years at simple interest. What is the rate of interest per annum?`,r,`SI = ${A} − ${P} = ${A-P}. Rate = SI×100/(P×T) = ${(A-P)*100}/(${P}×${t}) = ${r}%.`,{u:'%'})}
+ const P=R.pick([8000,10000,16000,20000,40000,50000]);
+ if(m===3){const r=R.pick([5,10,20]),A=P*Math.pow(1+r/100,2),CI=A-P;
+  return mk(R,'si',`Find the compound interest on ₹${P} for 2 years at ${r}% per annum, compounded annually.`,Math.round(CI*100)/100,`Amount = ${P} × (1 + ${r}/100)² = ₹${tidy(A,2)}. CI = ${tidy(A,2)} − ${P} = ₹${tidy(CI,2)}.`,{pre:'₹'})}
+ const r=R.pick([5,10,20]),d=P*r*r/10000;
+ return mk(R,'si',`What is the difference between compound interest and simple interest on ₹${P} for 2 years at ${r}% per annum?`,d,`For 2 years, CI − SI = P(r/100)² = ${P} × (${r}/100)² = ₹${tidy(d,Number.isInteger(d)?0:2)}.`,{pre:'₹'})};
+
+const TWP=[[10,15,6],[12,24,8],[20,30,12],[15,30,10],[12,6,4],[18,9,6],[30,45,18],[20,5,4],[24,8,6],[36,18,12],[16,48,12],[40,60,24]];
+const PIPE=[[6,12,12],[10,15,30],[8,24,12],[12,20,30],[4,12,6],[15,30,30]];
+T.tw=R=>{const m=R.int(1,4);
+ if(m===1){const [a,b,t]=R.pick(TWP);return mk(R,'tw',`A can complete a piece of work in ${a} days and B can complete it in ${b} days. In how many days will they finish it working together?`,t,`Together = ab/(a+b) = ${a}×${b}/${a+b} = ${t} days.`)}
+ if(m===2){const [a,b,t]=R.pick(TWP);return mk(R,'tw',`A and B together can complete a work in ${t} days. A alone can do it in ${a} days. In how many days can B alone do it?`,b,`1/B = 1/${t} − 1/${a} = ${a-t}/${a*t} → B = ${a*t}/${a-t} = ${b} days.`)}
+ if(m===3){const [a,b,t]=R.pick(PIPE);return mk(R,'tw',`An inlet pipe fills a tank in ${a} hours and an outlet pipe empties the full tank in ${b} hours. If both are opened together on the empty tank, in how many hours will it be full?`,t,`Net rate = 1/${a} − 1/${b} = ${b-a}/${a*b}. Time = ${a*b}/${b-a} = ${t} hours.`)}
+ for(let g=0;g<100;g++){const M=R.pick([6,8,10,12,15]),D=R.pick([12,15,20,24,30]),M2=R.pick([4,5,6,8,9,10,12,15,18,20,24,30]);if(M===M2||(M*D)%M2)continue;
+  return mk(R,'tw',`${M} men can finish a job in ${D} days. How many days will ${M2} men take to finish the same job?`,M*D/M2,`Man-days are constant: ${M}×${D} = ${M*D}. Days = ${M*D}/${M2} = ${M*D/M2}.`)}
+ return T.tw(R)};
+
+T.tsd=R=>{const m=R.int(1,4);
+ if(m===1){const v=R.pick([36,54,72,90,108]),t=R.int(6,20),ms=v*5/18,l=ms*t;
+  return mk(R,'tsd',`A train running at ${v} km/h crosses a pole in ${t} seconds. What is the length of the train (in metres)?`,l,`Speed = ${v} × 5/18 = ${ms} m/s. Length = ${ms} × ${t} = ${l} m.`)}
+ if(m===2){const sum=R.pick([72,90,108,126,144,162]),v1=R.int(30,sum-30),v2=sum-v1,t=R.int(6,16),tot=sum*5/18*t,l1=Math.floor(tot*0.4/5)*5,l2=tot-l1;
+  return mk(R,'tsd',`Two trains of lengths ${l1} m and ${l2} m run in opposite directions at ${v1} km/h and ${v2} km/h. In how many seconds will they cross each other?`,t,`Relative speed = ${sum} km/h = ${sum*5/18} m/s. Distance = ${l1}+${l2} = ${tot} m. Time = ${tot}/${sum*5/18} = ${t} s.`)}
+ if(m===3){const pairs=[[12,3],[10,2],[14,4],[8,2],[16,4],[18,6],[20,5]];const [u,v]=R.pick(pairs);const L=(a,b)=>a*b/gcd(a,b);const D=L(u+v,u-v)*R.int(1,2);
+  return mk(R,'tsd',`A boat goes ${D} km downstream in ${D/(u+v)} hours and returns the same distance upstream in ${D/(u-v)} hours. What is the speed of the stream (km/h)?`,v,`Downstream = ${D}/${D/(u+v)} = ${u+v} km/h. Upstream = ${D}/${D/(u-v)} = ${u-v} km/h. Stream = (${u+v} − ${u-v})/2 = ${v} km/h.`)}
+ const a=R.int(30,70),b=R.int(30,70),t=R.int(2,8),same=R.chance(.5);if(same&&a===b)return T.tsd(R);
+ const d=same?Math.abs(a-b)*t:(a+b)*t;
+ return mk(R,'tsd',`Two cars start from the same point at the same time, one at ${a} km/h and the other at ${b} km/h, moving ${same?'in the same direction':'in opposite directions'}. How far apart (km) are they after ${t} hours?`,d,`Relative speed = ${same?`${Math.max(a,b)} − ${Math.min(a,b)}`:`${a} + ${b}`} = ${same?Math.abs(a-b):a+b} km/h. Distance = ${same?Math.abs(a-b):a+b} × ${t} = ${d} km.`)};
+
+T.di=R=>{for(let g=0;g<200;g++){
+ const regs=R.shuffle(['North','South','East','West','Central']);
+ const rows=regs.map(r=>{const D=R.int(20,80)*5,L=Math.max(100,Math.round(D*R.pick([.5,.6,.7,.75,.8,.9])/50)*50),N=L/50*R.int(1,4);return{r,D,L,N}});
+ const ratios=rows.map(x=>x.L/x.D),mx=Math.max(...ratios);if(ratios.filter(v=>Math.abs(v-mx)<1e-9).length>1)continue;
+ const ctx=`<div class="dtc"><b>Region-wise deposits, loans and NPA of a bank (₹ crore)</b><table class="dt"><tr><th>Region</th><th>Deposits</th><th>Loans</th><th>NPA</th></tr>${rows.map(x=>`<tr><td>${x.r}</td><td>${x.D}</td><td>${x.L}</td><td>${x.N}</td></tr>`).join('')}</table></div>`;
+ const best=rows[ratios.indexOf(mx)];
+ const q1=mkS(R,'di','Which region has the highest loan-to-deposit ratio?',best.r,regs,`Loan ÷ Deposit by region: ${rows.map(x=>x.r+' '+tidy(x.L/x.D,2)).join(', ')}. Highest is ${best.r}.`);
+ const pr=R.pick(rows);const q2=mk(R,'di',`The NPA of ${pr.r} region is what percent of its loans?`,pr.N/pr.L*100,`NPA ÷ Loans × 100 = ${pr.N}/${pr.L} × 100 = ${tidy(pr.N/pr.L*100,Number.isInteger(pr.N/pr.L*100)?0:2)}%.`,{u:'%'});
+ const sD=rows.reduce((a,x)=>a+x.D,0),sL=rows.reduce((a,x)=>a+x.L,0);
+ const q3=R.chance(.5)?mk(R,'di','What is the average deposits per region (₹ crore)?',sD/5,`Total deposits = ${sD}. Average = ${sD}/5 = ${sD/5}.`):mk(R,'di','By how much (₹ crore) do total deposits exceed total loans?',sD-sL,`Total deposits = ${sD}, total loans = ${sL}. Difference = ${sD-sL}.`);
+ [q1,q2,q3].forEach(q=>q.ctx=ctx);return[q1,q2,q3]}
+ return T.di(R)};
+
+/* ---------- REASONING ---------- */
+const PERMS=(function(){const out=[];const a=[0,1,2,3,4,5];(function p(k){if(k===6){out.push(a.slice());return}for(let i=k;i<6;i++){[a[k],a[i]]=[a[i],a[k]];p(k+1);[a[k],a[i]]=[a[i],a[k]]}})(0);return out})();
+T.seat=R=>{for(let g=0;g<40;g++){
+ const names=R.shuffle(['Amit','Bina','Charu','Deepak','Esha','Farhan','Gita','Harsh']).slice(0,6);
+ const truth=R.shuffle([0,1,2,3,4,5]);const pos=v=>truth.indexOf(v);
+ const mkClue=()=>{const x=R.int(0,5);let y=R.int(0,5);while(y===x)y=R.int(0,5);const px=pos(x),py=pos(y),k=R.int(1,6);
+  const N=names;
+  if(k===1&&py===px+1)return{t:`${N[x]} sits immediately to the left of ${N[y]}.`,f:p=>p.indexOf(y)===p.indexOf(x)+1};
+  if(k===2&&px<py)return{t:`${N[x]} sits somewhere to the left of ${N[y]}.`,f:p=>p.indexOf(x)<p.indexOf(y)};
+  if(k===3)return{t:`Exactly ${Math.abs(px-py)-1===0?'no':Math.abs(px-py)-1} person${Math.abs(px-py)-1===1?'':'s'} sit${Math.abs(px-py)-1===1?'s':''} between ${N[x]} and ${N[y]}.`,f:p=>Math.abs(p.indexOf(x)-p.indexOf(y))===Math.abs(px-py)};
+  if(k===4)return{t:`${N[x]} sits ${['first','second','third','fourth','fifth','sixth'][px]} from the left end.`,f:p=>p.indexOf(x)===px};
+  if(k===5&&Math.abs(px-py)===1)return{t:`${N[x]} and ${N[y]} are neighbours.`,f:p=>Math.abs(p.indexOf(x)-p.indexOf(y))===1};
+  if(k===6&&(px===0||px===5))return{t:`${N[x]} sits at one of the extreme ends.`,f:p=>{const i=p.indexOf(x);return i===0||i===5}};
+  return null};
+ let cons=PERMS,clues=[];let tries=0;
+ while(cons.length>1&&clues.length<8&&tries++<80){const c=mkClue();if(!c)continue;const nc=cons.filter(c.f);if(nc.length<cons.length){cons=nc;clues.push(c)}}
+ if(cons.length!==1||clues.length<4)continue;
+ const arr=truth;const nm=i=>names[arr[i]];
+ const ctx=`<div class="dtc"><b>Six friends sit in a row, all facing north. Use the clues.</b><ol>${clues.map(c=>`<li>${c.t}</li>`).join('')}</ol></div>`;
+ const exp=`Arrangement (left to right): ${arr.map(v=>names[v]).join(', ')}.`;
+ const qs=[];const opt=ans=>{const w=names.filter(n=>n!==ans);return[w,ans]};
+ const kinds=R.shuffle(['left','right','nth','between','imm']).slice(0,3);
+ for(const kd of kinds){let q,ans,wr=names;
+  if(kd==='left'){q='Who sits at the extreme left end?';ans=nm(0)}
+  else if(kd==='right'){q='Who sits at the extreme right end?';ans=nm(5)}
+  else if(kd==='nth'){const n=R.int(2,5);q=`Who sits ${['','','second','third','fourth','fifth'][n]} from the left?`;ans=nm(n-1)}
+  else if(kd==='imm'){const i=R.int(0,4);q=`Who sits immediately to the right of ${nm(i)}?`;ans=nm(i+1)}
+  else{const i=R.int(0,3),j=i+R.int(2,5-i>=2?5-i:2);const jj=Math.min(j,5);q=`How many persons sit between ${nm(i)} and ${nm(jj)}?`;const c=jj-i-1;qs.push(mkS(R,'seat',q,String(c),['0','1','2','3','4'],exp));continue}
+  qs.push(mkS(R,'seat',q,ans,wr,exp))}
+ qs.forEach(q=>q.ctx=ctx);return qs}
+ return T.seat(R)};
+
+const PL=['Bank','Loan','Cheque','Card','Coin','Note','Share','Fund','Bond','Asset'];
+const MODELS=[];for(let m=0;m<256;m++){let ok=true;for(let s=0;s<3;s++){let has=false;for(let a=0;a<8;a++)if((m>>a&1)&&(a>>s&1))has=true;if(!has){ok=false;break}}if(ok)MODELS.push(m)}
+function holds(m,st){const has=f=>{for(let a=0;a<8;a++)if((m>>a&1)&&f(a))return true;return false};
+ const X=a=>(a>>st.x)&1,Y=a=>(a>>st.y)&1;
+ if(st.k==='A')return!has(a=>X(a)&&!Y(a));if(st.k==='E')return!has(a=>X(a)&&Y(a));
+ if(st.k==='I')return has(a=>X(a)&&Y(a));return has(a=>X(a)&&!Y(a))}
+const RESULTS=['Only conclusion I follows','Only conclusion II follows','Either I or II follows','Neither I nor II follows','Both I and II follow'];
+T.syl=R=>{const w=R.shuffle(PL).slice(0,3);
+ const txt=st=>{const a=w[st.x],b=w[st.y];return st.k==='A'?`All ${a}s are ${b}s.`:st.k==='E'?`No ${a} is a ${b}.`:st.k==='I'?`Some ${a}s are ${b}s.`:`Some ${a}s are not ${b}s.`};
+ const want=R.pick([0,1,2,3,3,4,4,1,0]);let best=null;
+ for(let g=0;g<400;g++){
+  const pr=[{k:R.pick(['A','A','E','I','I']),x:0,y:1},{k:R.pick(['A','A','E','I']),x:1,y:2}];
+  if(R.chance(.5)){pr[0]={k:pr[0].k,x:1,y:0}}if(R.chance(.5)){pr[1]={k:pr[1].k,x:2,y:1}}
+  const ms=MODELS.filter(m=>pr.every(p=>holds(m,p)));if(!ms.length)continue;
+  const pairs=[[0,2],[2,0],[0,1],[1,2]];const pc=()=>{const p=R.pick(pairs);return{k:R.pick(['A','E','I','O']),x:p[0],y:p[1]}};
+  const c1=pc(),c2=R.chance(.4)?{k:{A:'O',O:'A',I:'E',E:'I'}[c1.k],x:c1.x,y:c1.y}:pc();
+  const f1=ms.every(m=>holds(m,c1)),f2=ms.every(m=>holds(m,c2)),fe=ms.every(m=>holds(m,c1)||holds(m,c2));
+  const r=f1&&f2?4:f1?0:f2?1:fe?2:3;
+  const cand={pr,c1,c2,r};if(!best)best=cand;if(r===want){best=cand;break}}
+ const{pr,c1,c2,r}=best;
+ const ex=`Check every possible Venn arrangement that fits the statements. Conclusion I ${r===0||r===4?'is true in all of them':'is not true in every arrangement'}; Conclusion II ${r===1||r===4?'is true in all of them':'is not true in every arrangement'}${r===2?', but at least one of the two is always true, so either I or II follows':''}. Answer: ${RESULTS[r]}.`;
+ return{t:'syl',s:'Reasoning',q:`Statements: ${txt(pr[0])} ${txt(pr[1])}\nConclusions:\nI. ${txt(c1)}\nII. ${txt(c2)}`,o:RESULTS.slice(),a:r,e:ex}};
+
+const OPP={'>':'<','<':'>','≥':'≤','≤':'≥','=':'='},COMP={'>':'≤','≥':'<','<':'≥','≤':'>'};
+function derive(rels,i,j){let G=false,Lw=false,st=false;for(let k=i;k<j;k++){const r=rels[k];if(r==='>'||r==='≥')G=true;if(r==='<'||r==='≤')Lw=true;if(r==='>'||r==='<')st=true}
+ if(G&&Lw)return null;if(!G&&!Lw)return'=';return G?(st?'>':'≥'):(st?'<':'≤')}
+const IMPL={'>':['>','≥'],'≥':['≥'],'=':['=','≥','≤'],'<':['<','≤'],'≤':['≤']};
+T.ineq=R=>{const letters=R.shuffle(['P','Q','R','S','T','U','V','W','M','N']).slice(0,4);
+ const fam=R.chance(.65)?R.pick([['>','≥','='],['<','≤','=']]):['>','≥','=','≤','<'];
+ const rels=[0,1,2].map(()=>R.pick(fam));if(fam.length===3&&rels.every(r=>r==='='))rels[1]=fam[0];
+ const stmt=letters.map((l,i)=>l+(i<3?' '+rels[i]+' ':'')).join('');
+ const dOf=(a,b)=>a<b?derive(rels,a,b):(derive(rels,b,a)?OPP[derive(rels,b,a)]:null);
+ const mkC=()=>{const a=R.int(0,3);let b=R.int(0,3);while(b===a)b=R.int(0,3);const d=dOf(a,b);let c;
+  if(d&&R.chance(.55))c=R.pick(IMPL[d]);else c=R.pick(['>','≥','<','≤','=']);return{a,b,c}};
+ const c1=mkC();let c2;if(R.chance(.4)&&COMP[c1.c])c2={a:c1.a,b:c1.b,c:COMP[c1.c]};else c2=mkC();
+ const t=c=>{const d=dOf(c.a,c.b);return!!d&&IMPL[d].includes(c.c)};
+ const comp=c1.a===c2.a&&c1.b===c2.b&&COMP[c1.c]===c2.c;
+ /* classify by checking every integer assignment that satisfies the statement */
+ const EV={'>':(x,y)=>x>y,'≥':(x,y)=>x>=y,'=':(x,y)=>x===y,'≤':(x,y)=>x<=y,'<':(x,y)=>x<y};
+ let all1=true,all2=true,allE=true;
+ for(let v=0;v<625;v++){const val=[v%5,Math.floor(v/5)%5,Math.floor(v/25)%5,Math.floor(v/125)%5];
+  if(!rels.every((rl,k)=>EV[rl](val[k],val[k+1])))continue;
+  const a1=EV[c1.c](val[c1.a],val[c1.b]),a2=EV[c2.c](val[c2.a],val[c2.b]);
+  if(!a1)all1=false;if(!a2)all2=false;if(!a1&&!a2)allE=false}
+ const r=all1&&all2?4:all1?0:all2?1:allE?2:3;
+ const s=c=>`${letters[c.a]} ${c.c} ${letters[c.b]}`;
+ const dd=c=>{const d=dOf(c.a,c.b);return d?`${letters[c.a]} ${d} ${letters[c.b]}`:`no definite relation between ${letters[c.a]} and ${letters[c.b]}`};
+ return{t:'ineq',s:'Reasoning',q:`Statement: ${stmt}\nConclusions:\nI. ${s(c1)}\nII. ${s(c2)}`,o:RESULTS.slice(),a:r,e:`From the statement: I gives ${dd(c1)}; II gives ${dd(c2)}. ${comp&&r===2?'The two conclusions are exact opposites on the same pair and neither is fixed, so one of them must hold. ':''}Answer: ${RESULTS[r]}.`}};
+
+const HD=['North','East','South','West'],VEC=[[0,1],[1,0],[0,-1],[-1,0]];
+const TRI=[[3,4,5],[5,12,13],[6,8,10],[8,15,17],[9,12,15],[12,16,20],[7,24,25],[15,20,25]];
+T.dir=R=>{const [a,b,c]=R.pick(TRI);const [dy,dx]=R.chance(.5)?[a,b]:[b,a];const ex=R.int(2,6),h1=R.int(0,3),right=R.chance(.5),h2=(h1+(right?1:3))%4;
+ const turn=right?'right':'left';const name=['A','B','C','D','E','F'][R.int(0,5)]==='A'?'Arun':R.pick(['Arun','Rekha','Imran','Kavita','Joseph']);
+ const base=`${name} starts from point P and walks ${dy+ex} km towards ${HD[h1]}. Then ${name} turns ${turn} and walks ${dx} km. Then ${name} turns ${turn} again and walks ${ex} km.`;
+ if(R.chance(.6))return mk(R,'dir',base+' How far (km) is the final point from P?',c,`Net: ${dy} km ${HD[h1]} and ${dx} km ${HD[h2]} (the extra ${ex} km cancels out). Distance = √(${dy}² + ${dx}²) = ${c} km.`);
+ const vx=VEC[h1][0]*dy+VEC[h2][0]*dx,vy=VEC[h1][1]*dy+VEC[h2][1]*dx;
+ const dir=(vy>0?'North':'South')+'-'+(vx>0?'East':'West');
+ return mkS(R,'dir',base+' In which direction is the final point from P?',dir,['North-East','North-West','South-East','South-West','North','East'],`Net displacement: ${Math.abs(vy)} km ${vy>0?'North':'South'} and ${Math.abs(vx)} km ${vx>0?'East':'West'}. So the point is ${dir} of P.`)};
+
+const L=x=>String.fromCharCode(65+((x%26)+26)%26),WORDS=['BANK','LOAN','CASH','FUND','LEND','RATE','DEBIT','CARD','MONEY','SHARE','CHEQUE','DEPOSIT','LOCKER','BOND','TRUST','STOCK','CREDIT','AUDIT','TENURE','LEDGER'];
+const enc=(w,ty,k)=>[...w].map((c,i)=>{const x=c.charCodeAt(0)-65;return ty==='s'?L(x+k):ty==='r'?L(25-x):L(x+(i%2?k+1:k))}).join('');
+T.code=R=>{const [w1,w2]=R.shuffle(WORDS).slice(0,2);const ty=R.pick(['s','s','r','a']),k=R.int(1,5);
+ const rule=ty==='s'?`Each letter moves ${k} place${k>1?'s':''} forward in the alphabet.`:ty==='r'?'Each letter is replaced by its opposite letter (A↔Z, B↔Y, …).':`Letters alternately move ${k} and ${k+1} places forward.`;
+ const ans=enc(w2,ty,k);const wr=[enc(w2,'s',k+1),enc(w2,'s',k-1||6),enc(w2,'r',0),enc(w2,'a',k+1),enc(w2,'s',k+2),enc(w2,'s',k-2||7),enc(w2,'a',k)];
+ return mkS(R,'code',`In a certain code language, ${w1} is written as ${enc(w1,ty,k)}. How will ${w2} be written in that code?`,ans,wr,`${rule} Applying this to ${w2} gives ${ans}.`)};
+
+const nm=['Rohan','Meera','Sanjay','Priya','Anil','Divya'];
+T.rank=R=>{const m=R.int(1,4),p=R.int(5,30),q=R.int(4,25),N=p+q-1,n=R.pick(nm);
+ if(m===1)return mk(R,'rank',`${n} is ${p}th from the left end and ${q}th from the right end in a row of students. How many students are in the row?`,N,`Total = ${p} + ${q} − 1 = ${N}.`);
+ if(m===2)return mk(R,'rank',`In a class, ${n} ranks ${p}th from the top and ${q}th from the bottom. How many students are in the class?`,N,`Total = ${p} + ${q} − 1 = ${N}.`);
+ if(m===3)return mk(R,'rank',`In a row of ${N} students, ${n} is ${p}th from the left. What is ${n}'s position from the right end?`,q,`Position from right = ${N} − ${p} + 1 = ${q}.`);
+ const r=p+R.int(3,9),tot=r+q-1;return mk(R,'rank',`${n} is ${p}th from the left and Kiran is ${q}th from the right in a row. After they exchange places, ${n} becomes ${r}th from the left. How many people are in the row?`,tot,`Kiran originally stood at ${r}th from the left (that is where ${n} moved). Total = ${r} + ${q} − 1 = ${tot}.`)};
+
+T.aser=R=>{const m=R.int(1,4),s=R.int(0,8);let seq=[],ans,rule,wr;const show=a=>a.join(', ');
+ if(m===1){const d=R.int(2,5);seq=[0,1,2,3,4].map(i=>L(s+d*i));ans=L(s+d*5);rule=`Each letter moves ${d} places forward.`;wr=[L(s+d*5+1),L(s+d*5-1),L(s+d*5+2),L(s+d*5-2),L(s+d*5+3)]}
+ else if(m===2){let x=s;seq=[L(x)];for(let i=1;i<=4;i++){x+=i;seq.push(L(x))}x+=5;ans=L(x);rule='Gaps between letters increase: +1, +2, +3, +4, +5.';wr=[L(x+1),L(x-1),L(x+2),L(x-2),L(x+3)]}
+ else if(m===3){let x=s+25;seq=[L(x)];for(let i=2;i<=5;i++){x-=i;seq.push(L(x))}x-=6;ans=L(x);rule='Letters move backward by 2, 3, 4, 5, 6 places.';wr=[L(x+1),L(x-1),L(x+2),L(x-2),L(x+3)]}
+ else{seq=[0,1,2,3].map(i=>L(s+i)+L(25-s-i));ans=L(s+4)+L(25-s-4);rule='The first letter moves forward by 1 and the second moves backward by 1 each time.';wr=[L(s+5)+L(25-s-5),L(s+4)+L(25-s-3),L(s+3)+L(25-s-4),L(s+4)+L(25-s-5),L(s+5)+L(25-s-4)]}
+ return mkS(R,'aser',`What comes next? ${show(seq)}, ?`,ans,wr,`${rule} Next term = ${ans}.`)};
+
+/* ---------- bank-backed topics ---------- */
+const BANK=()=>root.RRB_BANK||{};
+function fromBank(t,n,R){const arr=(BANK()[t]||[]);return R.shuffle(arr.map((x,i)=>({t,s:SEC[t],q:x[0],o:x[1].slice(),a:x[2],e:x[3]||'',bi:i}))).slice(0,n)}
+const shuf4=(R,q)=>{const c=q.o[q.a];const fixed=q.o.some(o=>/^(No error|None|All of|Both)/i.test(o));if(fixed)return q;q.o=R.shuffle(q.o);q.a=q.o.indexOf(c);return q};
+
+function has(t){return !!T[t]||(BANK()[t]&&BANK()[t].length>0)}
+function bankSize(t){return T[t]?999:(BANK()[t]||[]).length}
+function genQuestions(t,n,R){let out=[];const seen=new Set();
+ if(!T[t]){return fromBank(t,n,R).map(q=>(q.k=hs(q.q+q.o.join()),shuf4(R,q)))}
+ let g=0;while(out.length<n&&g++<n*6){let r=T[t](R);r=Array.isArray(r)?r:[r];for(const q of r){const k=hs(q.q+(q.ctx||'')+q.o.join());if(seen.has(k))continue;seen.add(k);q.k=k;out.push(q);}}
+ return out.slice(0,n)}
+
+const BP={Reasoning:{seat:9,ineq:5,syl:5,blood:3,dir:4,code:5,rank:4,aser:5},Quant:{simp:6,ser:5,quad:5,di:6,pct:3,rat:2,avg:2,pl:3,si:2,tw:3,tsd:3},
+ English:{err:12,fib:12,vocab:8,idiom:8},GA:{bank:14,fin:13,org:13},Computer:{cbasic:14,csoft:13,cnet:13}};
+function scale(bp,n){const tot=Object.values(bp).reduce((a,b)=>a+b,0);const raw=Object.entries(bp).map(([k,v])=>[k,v*n/tot]);
+ const out={};let used=0;raw.forEach(([k,v])=>{out[k]=Math.floor(v);used+=out[k]});
+ raw.sort((a,b)=>(b[1]%1)-(a[1]%1));let i=0;while(used<n){out[raw[i++%raw.length][0]]++;used++}return out}
+function section(name,bp,R){let qs=[];for(const[t,n]of Object.entries(bp)){if(n>0)qs=qs.concat(genQuestions(t,n,R))}return qs}
+/* kinds: prelims, mains, sec, mini */
+function buildMock(kind,seed,sec){const R=RNG(seed);let secs=[],dur,name;
+ if(kind==='prelims'){secs=[['Reasoning',BP.Reasoning],['Quant',BP.Quant]];dur=45}
+ else if(kind==='mains'){secs=[['Reasoning',BP.Reasoning],['English',BP.English],['Quant',BP.Quant],['GA',BP.GA],['Computer',BP.Computer]];dur=120}
+ else if(kind==='sec'){secs=[[sec,scale(BP[sec],25)]];dur=15}
+ else{secs=[['Reasoning',scale(BP.Reasoning,10)],['Quant',scale(BP.Quant,10)]];dur=12}
+ let qs=[];for(const[s,bp]of secs){const part=section(s,bp,R);part.forEach(q=>q.s=s);qs=qs.concat(part)}
+ return{kind,seed,dur:dur*60,qs}}
+
+root.RRB={SEC,T,has,bankSize,genQuestions,buildMock,RNG,hs,BP,section,tidy,derive,MODELS,holds};
+if(typeof module!=='undefined')module.exports=root.RRB;
+})(typeof window!=='undefined'?window:globalThis);
+</script>
+<script>
+/* Lessons, interview prep and exam guide content */
+window.RRB_DATA={
+SECTIONS:[
+ {id:'Quant',name:'Quantitative Aptitude',note:'40 marks in Prelims and 40 in Mains'},
+ {id:'Reasoning',name:'Reasoning',note:'40 marks in Prelims and 40 in Mains'},
+ {id:'English',name:'English Language',note:'Mains'},
+ {id:'GA',name:'General and Financial Awareness',note:'Mains'},
+ {id:'Computer',name:'Computer Knowledge',note:'Mains'}],
+LESSONS:[
+{id:'simp',sec:'Quant',name:'Simplification and Approximation',mins:45,
+ notes:['Follow <b>BODMAS</b>: Brackets, Orders (powers, roots), Division, Multiplication, Addition, Subtraction. Division and multiplication share a rank, so work left to right.','Memorise squares up to 30, cubes up to 15 and tables up to 20. This saves seconds on every question.','In approximation, round each number to a convenient value and calculate. The options are usually far apart.','x% of y = y% of x. Use whichever is easier (8% of 25 = 25% of 8 = 2).'],
+ formulas:[['(a + b)²','a² + 2ab + b²'],['(a − b)²','a² − 2ab + b²'],['a² − b²','(a + b)(a − b)'],['a³ + b³','(a + b)(a² − ab + b²)'],['Fractions to %','1/8 = 12.5%, 1/6 = 16.67%, 1/12 = 8.33%, 1/16 = 6.25%']],
+ tips:['Stop calculating as soon as only one option can be right.','Use the last digit to eliminate options in multiplication.']},
+{id:'ser',sec:'Quant',name:'Number Series',mins:40,
+ notes:['Check the difference between neighbouring terms first. If the differences are not constant, check the second difference.','Next test: × k ± c, squares or cubes ± c, alternating patterns, and prime numbers.','Slow growth suggests addition. Fast growth suggests multiplication or powers.','Before answering, test your rule on two other pairs of terms.'],
+ formulas:[['Squares 1–15','1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225'],['Cubes 1–10','1, 8, 27, 64, 125, 216, 343, 512, 729, 1000'],['Primes','2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47']],
+ tips:['Write the differences in a row under the series. Most RRB series fall within 30 seconds this way.']},
+{id:'quad',sec:'Quant',name:'Quadratic Equations',mins:40,
+ notes:['Split the middle term: find two numbers whose product is (coefficient of x² × constant) and whose sum is the coefficient of x.','Solve both equations, then compare every root of x with every root of y on a number line.','If every x is greater than every y, the answer is x > y. If only "greater or equal" holds, it is x ≥ y. Any mixed result means x = y or no relation.'],
+ formulas:[['Sum / product of roots','α + β = −b/a and αβ = c/a'],['Factor form','x² − (α + β)x + αβ = 0']],
+ tips:['Check signs carefully. A positive constant with a positive middle term gives two negative roots.']},
+{id:'pct',sec:'Quant',name:'Percentage',mins:45,
+ notes:['Convert percentages to fractions you know: 25% = 1/4, 20% = 1/5, 12.5% = 1/8, 16.67% = 1/6.','For successive changes, never add the percentages directly. Use the combined formula.','In election questions, the winner\'s margin is (2p − 100)% of the total valid votes.'],
+ formulas:[['Successive change','a + b + ab/100'],['Increase then decrease by same x%','Net loss = x²/100 %'],['A is x% more than B','B is 100x/(100 + x)% less than A'],['A is x% less than B','B is 100x/(100 − x)% more than A'],['Population growth','P(1 + r/100)ⁿ']],
+ tips:['Choose a base of 100 or 1000 when no actual value is given.']},
+{id:'rat',sec:'Quant',name:'Ratio and Proportion',mins:40,
+ notes:['Convert a ratio into "parts". Find the value of one part, then multiply.','For age problems, express ages as ratio × k, then apply the years added or subtracted.','To combine A:B and B:C, make the B value the same in both ratios.'],
+ formulas:[['Share of A','a/(a + b + c) × total'],['Compound ratio of a:b and c:d','ac : bd'],['Mixture, adding water','New water = old water + added water, milk unchanged']],
+ tips:['Always reduce the final ratio before matching the option.']},
+{id:'avg',sec:'Quant',name:'Average and Ages',mins:35,
+ notes:['Average = Sum ÷ Number of terms. When a member is replaced, the change in total ÷ n gives the change in average.','Work with the total, not the average. Total is easier to add and subtract.','Average speed for equal distances is not the arithmetic mean.'],
+ formulas:[['First n natural numbers','Average = (n + 1)/2'],['First n even / odd numbers','n + 1 and n'],['Average speed (equal distances)','2ab/(a + b)'],['Replacement','New avg = old avg + (new − old member)/n']],
+ tips:['After a person joins with age more than the average, the average rises by (age − old avg)/(n + 1).']},
+{id:'pl',sec:'Quant',name:'Profit, Loss and Discount',mins:45,
+ notes:['All profit and loss % are calculated on cost price unless stated. Discount % is on marked price.','Assume CP = 100 when no values are given and track MP and SP from there.','Two items sold at the same price with equal gain and loss % always give an overall loss.'],
+ formulas:[['Profit %','Profit/CP × 100'],['SP','CP × (100 ± p)/100'],['SP from MP','MP × (100 − d)/100'],['Two successive discounts','d₁ + d₂ − d₁d₂/100'],['Equal gain and loss %','Loss = p²/100 %']],
+ tips:['Profit on SP is different from profit on CP. Read the question twice.']},
+{id:'si',sec:'Quant',name:'Simple and Compound Interest',mins:45,
+ notes:['SI grows linearly. CI grows on the previous amount.','The difference between CI and SI for 2 years is a quick shortcut that appears often.','For half-yearly compounding, halve the rate and double the time.'],
+ formulas:[['SI','PRT/100'],['Amount (CI)','P(1 + r/100)ⁿ'],['CI − SI (2 years)','P(r/100)²'],['CI − SI (3 years)','P(r/100)²(3 + r/100)'],['Money doubles at SI','Time = 100/rate years']],
+ tips:['For 2 years at 10%, the growth factor is 1.21. At 20% it is 1.44. At 5% it is 1.1025.']},
+{id:'tw',sec:'Quant',name:'Time and Work, Pipes',mins:45,
+ notes:['Take the total work as the LCM of the days given. Then each person\'s daily work is a whole number.','Efficiency is inversely proportional to time taken.','In pipe questions, an inlet adds work and an outlet subtracts work.'],
+ formulas:[['Together','ab/(a + b)'],['Pipe fills and another empties','ab/(b − a)'],['Man-days','M₁D₁ = M₂D₂'],['Work','Rate × Time']],
+ tips:['If A is twice as efficient as B, A takes half the time of B.']},
+{id:'tsd',sec:'Quant',name:'Time, Speed and Distance',mins:50,
+ notes:['Always match units before calculating: km/h with km and hours, m/s with m and seconds.','A train crossing a pole travels its own length. Crossing a platform it travels length + platform.','For boats, downstream speed = still-water speed + stream and upstream = still-water speed − stream.'],
+ formulas:[['km/h to m/s','× 5/18'],['m/s to km/h','× 18/5'],['Opposite directions','Relative speed = sum'],['Same direction','Relative speed = difference'],['Boat in still water','(D + U)/2 and stream (D − U)/2']],
+ tips:['If speed is increased in ratio a:b, time changes in ratio b:a.']},
+{id:'di',sec:'Quant',name:'Data Interpretation',mins:50,
+ notes:['Read the title, units and column headings before the questions.','Compare numbers by rough approximation. Avoid full division unless the options are close.','Percentage change = (new − old)/old × 100. Use fractions you know, like 1/8 = 12.5%.','In sets of 5 questions, answer the easy direct-reading questions first.'],
+ formulas:[['Percentage change','(New − Old)/Old × 100'],['Ratio','A : B (reduce to simplest form)'],['Average','Total/Number of items']],
+ tips:['Watch for units such as ₹ lakh versus ₹ crore.']},
+
+{id:'ineq',sec:'Reasoning',name:'Inequalities and Coded Inequalities',mins:35,
+ notes:['Symbols combine only in the same direction. > with ≥ gives >. = with > gives >.','A mix of > and < (like P > Q < R) gives no relation between P and R.','"Either I or II" applies when both conclusions use the same two letters and are exact opposites.','For "=" to follow, every link in the chain must be "=".'],
+ formulas:[['> and >','>'],['> and ≥','>'],['≥ and ≥','≥'],['= and ≥','≥'],['≥ and ≤ (or > and <)','No definite relation']],
+ tips:['Write the chain with letters in order and check the conclusion left to right.']},
+{id:'syl',sec:'Reasoning',name:'Syllogism',mins:40,
+ notes:['A conclusion follows only if it is true in every possible Venn diagram that fits the statements.','All A are B and All B are C gives All A are C. Some A are B and All B are C gives Some A are C.','All A are B and No B is C gives No A is C. Some A are B and No B is C gives Some A are not C.','If neither conclusion follows but they are exact opposites on the same pair (Some / No, or All / Some not), the answer is "Either I or II".'],
+ formulas:[['All A are B','Some B are A (conversion)'],['Some A are B','Some B are A'],['No A is B','No B is A']],
+ tips:['Draw the minimum diagram first, then try to break the conclusion by moving circles.']},
+{id:'seat',sec:'Reasoning',name:'Seating and Puzzles',mins:60,
+ notes:['Read all clues first. Place definite clues (fixed positions) before relative ones.','"Immediately left" means the two seats are adjacent. "To the left" means anywhere on the left.','If two cases are possible, keep both in separate rows and check which survives later clues.','Facing north: your left is west. Facing south: it reverses.','Always verify the final arrangement against every clue.'],
+ formulas:[['Persons between two seats','|position₁ − position₂| − 1'],['k-th from left in n persons','(n − k + 1)-th from right']],
+ tips:['Practise at least one full arrangement every day. This is the highest-scoring Reasoning topic.']},
+{id:'blood',sec:'Reasoning',name:'Blood Relations',mins:30,
+ notes:['Draw a family tree. Use + for male, − for female, = for a married couple.','Parent\'s brother = uncle, parent\'s sister = aunt, their children = cousins, spouse\'s sibling = brother/sister-in-law.','"Only daughter of my mother" means the speaker (or her sister if mentioned).','When gender is unknown, choose the option that does not assume one (like "cousin" or "sibling").'],
+ formulas:[['Father\'s father','Paternal grandfather'],['Mother\'s brother','Maternal uncle'],['Brother\'s wife','Sister-in-law'],['Sister\'s husband','Brother-in-law']],
+ tips:['Never assume a person\'s gender if the question has not told you.']},
+{id:'dir',sec:'Reasoning',name:'Direction Sense',mins:30,
+ notes:['Draw the path with North at the top. Turn right from North and you face East.','Use Pythagoras for the straight-line distance when two perpendicular legs remain.','Shadow questions: in the morning the shadow falls to the west, in the evening to the east.'],
+ formulas:[['Clockwise order','N → E → S → W'],['Common triples','3-4-5, 5-12-13, 8-15-17, 7-24-25, 6-8-10'],['Compass','N, NE, E, SE, S, SW, W, NW']],
+ tips:['Cancel opposite legs first. They do not change the final position.']},
+{id:'code',sec:'Reasoning',name:'Coding-Decoding',mins:30,
+ notes:['Write letter positions A = 1 to Z = 26 on rough paper.','Check for a constant shift (+k), reverse alphabet, alternating shifts, or a change in letter order.','Test your rule on a second letter before applying it.'],
+ formulas:[['Opposite letter','Position + opposite position = 27 (A↔Z, B↔Y)'],['Landmarks','E = 5, J = 10, O = 15, T = 20, Y = 25']],
+ tips:['If the code is shorter than the word, count letters in the first and last positions.']},
+{id:'rank',sec:'Reasoning',name:'Ranking and Order',mins:25,
+ notes:['Total = rank from left + rank from right − 1.','Persons between two people = |difference of their positions| − 1.','When two people exchange places, the person who moves into the other\'s old spot takes that position number.'],
+ formulas:[['Total','Left rank + Right rank − 1'],['Right rank','Total − Left rank + 1'],['Between A and B','|pA − pB| − 1']],
+ tips:['Draw a short row with boxes. Mark positions with numbers.']},
+{id:'aser',sec:'Reasoning',name:'Alphabet and Letter Series',mins:30,
+ notes:['Convert letters to numbers and look at the differences, just like a number series.','Opposite pairs (A–Z, B–Y) often appear in letter-pair series.','Wrap around: after Z comes A.'],
+ formulas:[['Position','A=1, B=2, … Z=26'],['Opposite letter','27 − position']],
+ tips:['Write the alphabet with numbers at the start of each reasoning practice session.']},
+
+{id:'err',sec:'English',name:'Error Spotting',mins:40,
+ notes:['Subject–verb agreement: "each", "every", "neither", "one of" take singular verbs.','"As well as", "along with", "together with" do not change the verb; the first subject decides.','Prepositions: senior/junior/superior/prefer + <b>to</b>; since (point in time) vs for (period).','"Hardly … when", "No sooner … than", "Scarcely … when".','News, mathematics, physics, economics are singular.'],
+ formulas:[['Correlatives','Either…or, Neither…nor, Not only…but also, Both…and'],['Since vs for','since 2015 / for ten years']],
+ tips:['Read the sentence aloud in your head. Your ear catches many errors faster than rules.']},
+{id:'fib',sec:'English',name:'Fill in the Blanks and Cloze',mins:40,
+ notes:['Check grammar first (verb form, article, preposition), then meaning.','Learn common verb + preposition pairs: insist on, refrain from, satisfied with, fond of.','Unreal conditions use "were" and the past tense: "If I were you…".','For cloze passages, read the whole passage first and fill the easy blanks.'],
+ formulas:[['Few / a few / little / a little','Few and many for countable; little and much for uncountable']],
+ tips:['Eliminate options that are grammatically impossible, then choose by meaning.']},
+{id:'vocab',sec:'English',name:'Vocabulary',mins:30,
+ notes:['Learn 10 new words every day with one example sentence each.','Group words by theme: positive, negative, banking and finance terms.','Use prefixes and roots: bene- (good), mal- (bad), bio- (life), anti- (against).','Read The Hindu or Indian Express editorials for 20 minutes daily.'],
+ formulas:[],tips:['Review old words every third day using the flashcards in the Revise tab.']},
+{id:'idiom',sec:'English',name:'Idioms and Phrases',mins:25,
+ notes:['Learn idioms as meaning units. Do not translate them word by word.','Group by theme (money, time, effort) to remember them more easily.','Use each new idiom in a sentence of your own.'],
+ formulas:[],tips:['Revise ten idioms every day using the flashcards.']},
+
+{id:'bank',sec:'GA',name:'Banking Awareness',mins:50,
+ notes:['<b>RBI</b>: established 1 April 1935, nationalised 1 January 1949, central bank, issues currency notes (except ₹1) and regulates banks.','Monetary policy tools: Repo, Reverse Repo, CRR, SLR, Bank Rate, MSF, OMOs. MPC has 6 members and targets CPI inflation of 4% (±2%).','<b>RRBs</b> were created by the RRB Act 1976. Prathama Bank was the first (2 October 1975). Ownership: Centre 50%, State 15%, sponsor bank 35%.','Payments: NEFT (24×7), RTGS (minimum ₹2 lakh), IMPS and UPI (run by NPCI).','NPA: a loan overdue for more than 90 days. Basel norms: capital adequacy standards by the Basel Committee.'],
+ formulas:[],tips:['Make a one-page RBI sheet and revise it every week.']},
+{id:'fin',sec:'GA',name:'Financial Awareness and Schemes',mins:50,
+ notes:['Regulators: RBI (banks, NBFCs), SEBI (securities), IRDAI (insurance), PFRDA (pensions).','Schemes: PMJDY (2014), APY (₹1,000–5,000 pension), PMJJBY (₹2 lakh life cover), PMSBY (₹2 lakh accident cover), Sukanya Samriddhi, PM Mudra (Shishu/Kishor/Tarun).','Markets: primary (IPO) and secondary; Sensex (BSE, 30), Nifty (NSE, 50). Money market instruments are under one year.','Budget basics: financial year April–March, GST since 1 July 2017, Finance Commission under Article 280.'],
+ formulas:[],tips:['Add every new scheme or policy change you read about to the Current Affairs notebook.']},
+{id:'org',sec:'GA',name:'Organisations and Headquarters',mins:30,
+ notes:['International: IMF and World Bank (Washington, D.C.), ADB (Manila), AIIB (Beijing), NDB (Shanghai), WTO (Geneva), BIS (Basel).','Indian institutions: NABARD, SEBI, NPCI (Mumbai), SIDBI (Lucknow), PFRDA (New Delhi), IRDAI (Hyderabad).','Banks: Canara (Bengaluru), IOB and Indian Bank (Chennai), UCO (Kolkata), Bank of Maharashtra (Pune), PNB (New Delhi).'],
+ formulas:[],tips:['Learn headquarters as pairs on flashcards.']},
+{id:'ca',sec:'GA',name:'Current Affairs Notebook',mins:20,special:'ca',
+ notes:['Spend 20 to 30 minutes every day on current affairs. Focus on the last 6 months before the exam.','Priority areas: RBI policy decisions, Union Budget points, new schemes, appointments, awards, summits and sports events.','Sources: PIB, RBI press releases, The Hindu or Indian Express, and a monthly capsule.','Write one line per news item in the notebook below. Review it every Sunday.'],
+ formulas:[],tips:['Ask your tutor (me) for a monthly current-affairs capsule in the chat and paste the key points here.']},
+
+{id:'cbasic',sec:'Computer',name:'Computer Fundamentals',mins:35,
+ notes:['Generations: vacuum tubes, transistors, integrated circuits, microprocessors, AI.','Memory: RAM and cache are volatile, ROM and hard disks are non-volatile. 1 byte = 8 bits, 1 KB = 1024 bytes.','Input devices: keyboard, mouse, scanner. Output: monitor, printer, speaker.','Number systems: binary (2), octal (8), decimal (10), hexadecimal (16).'],
+ formulas:[['Units','Bit → Byte → KB → MB → GB → TB']],tips:['Learn the full forms of 30 common abbreviations (CPU, ALU, BIOS, USB, ROM).']},
+{id:'csoft',sec:'Computer',name:'Software, MS Office and Shortcuts',mins:35,
+ notes:['System software: operating system, utilities, drivers. Application software: Word, Excel, browsers.','Shortcuts: Ctrl+C, V, X, Z, Y, A, S, P, B, I, U. F12 = Save As. F5 = start slide show.','Excel: formulas start with "=". SUM, AVERAGE, MAX, MIN, COUNT, IF are the key functions.','Default extensions: .docx, .xlsx, .pptx, .pdf, .txt.'],
+ formulas:[['Excel basics','=SUM(A1:A5), =AVERAGE(), =MAX(), =IF(test, yes, no)']],tips:['Practise shortcuts on your own computer for 10 minutes a day.']},
+{id:'cnet',sec:'Computer',name:'Networks, Internet and Security',mins:35,
+ notes:['Networks: LAN, MAN, WAN. Devices: router, switch, hub, modem.','Internet: IP address, URL, DNS, HTTP and HTTPS, ISP, browser.','Security: virus, worm, Trojan, ransomware, phishing, firewall, antivirus, encryption, VPN.','Email: To, CC and BCC. Spam is unwanted bulk mail.'],
+ formulas:[],tips:['Learn one definition for each security term. Questions are direct.']}
+],
+INTERVIEW:[
+ {q:'Tell me about yourself.',a:'Give 60 seconds: education (MBA, specialisations), one achievement, why banking. End with what you want from the role.'},
+ {q:'Why do you want to join an RRB?',a:'Link to rural credit, financial inclusion, and growth. Show you know RRBs serve farmers, small traders and self-help groups.'},
+ {q:'What is the difference between a commercial bank and an RRB?',a:'RRBs are owned by Centre (50%), State (15%) and a sponsor bank (35%) and focus on rural and priority sector lending.'},
+ {q:'What is repo rate? What happens when it rises?',a:'Rate at which RBI lends to banks. Higher repo makes loans costlier, reduces spending and helps control inflation.'},
+ {q:'What is financial inclusion?',a:'Access to affordable banking services for everyone. Mention PMJDY, UPI, Business Correspondents and Mudra.'},
+ {q:'What is an NPA and how can banks reduce it?',a:'Loan overdue for more than 90 days. Reduce it with better credit appraisal, monitoring, recovery drives and restructuring.'},
+ {q:'Why are you willing to relocate or work in a rural branch?',a:'Be honest and positive: you see rural exposure as a base for learning and a way to serve customers directly.'},
+ {q:'What are your strengths and weaknesses?',a:'Pick a real strength with proof. Give a weakness you are actively fixing, with one example.'},
+ {q:'How would you handle an angry customer?',a:'Listen fully, apologise for the inconvenience, fix what you can, escalate what you cannot, and follow up.'},
+ {q:'Explain one government scheme in detail.',a:'Prepare two: PMJDY and Mudra or APY. Know launch year, eligibility, benefits and numbers.'},
+ {q:'What is the difference between NEFT, RTGS and UPI?',a:'NEFT: batches, any amount. RTGS: real-time, ₹2 lakh minimum. UPI: instant mobile payments by NPCI.'},
+ {q:'What recent banking news have you followed?',a:'Prepare three recent items (policy, merger, scheme) with one line of impact each.'}],
+GUIDE_PATTERN:[
+ ['Prelims (both posts)','Reasoning 40 + Quantitative Aptitude 40','80 Q, 80 marks, 45 min total'],
+ ['Mains: Officer Scale I (PO)','Reasoning, General/Financial Awareness, English or Hindi, Quant, Computer (40 Q each)','200 Q, 200 marks, 2 hours'],
+ ['Mains: Office Assistant (Clerk)','Reasoning, Computer, General Awareness, English or Hindi, Quant (40 Q each)','200 Q, 200 marks, 2 hours'],
+ ['Interview','Officer Scale I only','100 marks; final merit uses Mains and Interview weightage'],
+ ['Negative marking','One-fourth (0.25) mark deducted for each wrong answer','Five options per question']]
+};
+</script>
+<script>
+(function(){
+const G=window.RRB,D=window.RRB_DATA,L=D.LESSONS,LB=Object.fromEntries(L.map(l=>[l.id,l])),SECN=Object.fromEntries(D.SECTIONS.map(s=>[s.id,s]));
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pad=n=>String(n).padStart(2,'0');
+const dstr=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const today=()=>dstr(new Date());
+const pd=s=>{const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const addDays=(s,n)=>{const d=pd(s);d.setDate(d.getDate()+n);return dstr(d)};
+const diff=(a,b)=>Math.round((pd(b)-pd(a))/864e5);
+const DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const fd=s=>{const d=pd(s);return DOW[d.getDay()]+' '+d.getDate()+' '+MON[d.getMonth()]};
+const pct=(a,b)=>b?Math.round(a/b*100):0;
+const LS='rrbprep.v1';
+function defaults(){return{v:1,name:'Abhishek',examDate:addDays(today(),90),examSet:false,hours:3,post:'Both',planStart:today(),learned:{},stats:{},daily:{},mocks:[],notebook:[],cards:{},plan:{},notes:[],caweeks:{},log:[],cur:null}}
+function load(){try{const j=localStorage.getItem(LS);if(j)return Object.assign(defaults(),JSON.parse(j))}catch(e){}return defaults()}
+let S=load();
+function save(){try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}}
+const ui={tab:'dashboard',st:{sec:'Quant',id:'simp',ex:null},pr:{sec:'Quant',sel:{},n:10,run:null},cur:null,result:null,rv:{sub:'nb',nb:null,fc:null,fsec:'All'},mk:{confirm:false,rf:'wrong'},trk:{},reset:false,sw:null,toast:'',ca:{w:null,rv:null}};
+const TABS=[['dashboard','Dashboard'],['study','Study'],['practice','Practice'],['mocks','Mocks'],['revise','Revise'],['tracker','Tracker'],['planner','Planner'],['tutor','Tutor'],['guide','Guide']];
+const SEC_IDS=D.SECTIONS.map(s=>s.id);
+const ids=sec=>L.filter(l=>l.sec===sec).map(l=>l.id);
+const tname=id=>LB[id]?LB[id].name:id;
+
+/* ---------- stats helpers ---------- */
+function dayRec(d){d=d||today();return S.daily[d]||(S.daily[d]={q:0,c:0,min:0})}
+function rec(q,ok,secs){const st=S.stats[q.t]||(S.stats[q.t]={a:0,c:0,t:0});st.a++;if(ok)st.c++;st.t+=Math.min(secs||0,300);const d=dayRec();d.q++;if(ok)d.c++;if(!ok)addNB(q)}
+function addNB(q){if(S.notebook.some(x=>x.k===q.k))return;if(S.notebook.length>=400)S.notebook.shift();S.notebook.push({k:q.k,q:{t:q.t,s:q.s,q:q.q,o:q.o,a:q.a,e:q.e,ctx:q.ctx||''},box:0,due:addDays(today(),1),added:today()})}
+function tStat(id){const s=S.stats[id];if(!s||!s.a)return{a:0,acc:0,avg:0,label:'New',cls:'mut'};const acc=pct(s.c,s.a),avg=Math.round(s.t/s.a);
+ if(s.a<5)return{a:s.a,acc,avg,label:'Building',cls:'sky'};return{a:s.a,acc,avg,label:acc>=80?'Strong':acc>=60?'Okay':'Weak',cls:acc>=80?'good':acc>=60?'sky':'bad'}}
+function totals(){let a=0,c=0;Object.values(S.stats).forEach(s=>{a+=s.a;c+=s.c});return{a,c,acc:pct(c,a)}}
+function active(d){const r=S.daily[d];return!!r&&(r.q>0||r.min>0)}
+function streak(){let d=today(),n=0;if(!active(d))d=addDays(d,-1);while(active(d)){n++;d=addDays(d,-1)}return n}
+function weekMin(){let m=0;for(let i=0;i<7;i++){const r=S.daily[addDays(today(),-i)];if(r)m+=r.min||0}return m}
+const hrs=m=>m>=60?(m/60).toFixed(1)+' h':m+' min';
+function weakTopics(){return L.filter(l=>G.has(l.id)).map(l=>({id:l.id,...tStat(l.id)})).filter(x=>x.a>=5&&x.acc<75).sort((a,b)=>a.acc-b.acc)}
+function dueNB(){const t=today();return S.notebook.filter(x=>x.due<=t).sort((a,b)=>a.due<b.due?-1:1)}
+const INT=[1,3,7,14,30];
+
+/* ---------- flashcards ---------- */
+const DECK=(function(){const out=[];const B=window.RRB_BANK;['bank','fin','org','cbasic','csoft','cnet','vocab','idiom'].forEach(t=>(B[t]||[]).forEach((x,i)=>out.push({id:'b:'+t+':'+i,sec:G.SEC[t],f:x[0],b:x[1][x[2]]+'. '+x[3]})));
+ L.forEach(l=>l.formulas.forEach((f,i)=>out.push({id:'f:'+l.id+':'+i,sec:l.sec,f:l.name+': '+f[0],b:f[1]})));return out})();
+function dueCards(sec){const t=today();return DECK.filter(c=>(sec==='All'||!sec||c.sec===sec)&&(!S.cards[c.id]||S.cards[c.id].due<=t))}
+
+/* ---------- planner ---------- */
+const QT=ids('Quant'),RT=ids('Reasoning'),XS=['English','GA','Computer'];
+function phaseOf(date){const T=Math.max(1,diff(S.planStart,S.examDate)+1),i=diff(S.planStart,date);if(i<0)return'Before';if(i>=T)return'Exam';const f=i/T;return f<.4?'Foundation':f<.75?'Practice':'Revision'}
+function weakest(sec,i){const w=weakTopics().filter(x=>LB[x.id].sec===sec);if(w.length)return w[i%w.length].id;const a=ids(sec).filter(x=>G.has(x));return a[i%a.length]}
+function planFor(date){const i=Math.max(0,diff(S.planStart,date)),ph=phaseOf(date),dow=pd(date).getDay(),H=S.hours*60,al=p=>Math.max(10,Math.round(H*p/5)*5),tasks=[];
+ const xsec=XS[i%3],xl=L.filter(l=>l.sec===xsec&&l.id!=='ca'),xi=xl[Math.floor(i/3)%xl.length].id;
+ if(dow===0&&ph!=='Exam'){tasks.push(ph==='Foundation'||ph==='Before'?{k:'mock',t:'Mini mock (20 questions) and weekly review',m:al(.6),a:'mocks'}:{k:'mock',t:'Full prelims mock (80 questions, 45 min), then analyse every mistake',m:al(.85),a:'mocks'})}
+ else if(ph==='Foundation'||ph==='Before'){const qi=QT[i%QT.length],ri=RT[i%RT.length];
+  tasks.push({k:'q',t:'Learn '+tname(qi)+', then 10 questions',m:al(.27),a:'lesson',id:qi});
+  tasks.push({k:'r',t:'Learn '+tname(ri)+', then 10 questions',m:al(.27),a:'lesson',id:ri});
+  tasks.push({k:'x',t:xsec+': '+tname(xi),m:al(.2),a:'lesson',id:xi});
+  if(dow===6)tasks.push({k:'sec',t:'Sectional test: '+['Quant','Reasoning'][i%2]+' (25 questions)',m:20,a:'mocks'})}
+ else if(ph==='Practice'){const wq=weakest('Quant',i),wr=weakest('Reasoning',i);
+  tasks.push({k:'q',t:'Timed practice: 20 questions on '+tname(wq),m:al(.27),a:'practice',id:wq});
+  tasks.push({k:'r',t:'Timed practice: 20 questions on '+tname(wr),m:al(.27),a:'practice',id:wr});
+  tasks.push({k:'x',t:'Practice: '+tname(xi),m:al(.2),a:'practice',id:xi});
+  if(dow===6)tasks.push({k:'sec',t:'Sectional test: '+XS.concat(['Quant','Reasoning'])[i%5],m:20,a:'mocks'})}
+ else if(ph==='Revision'){tasks.push(i%2===0?{k:'rev',t:'Full mock (prelims or mains) under exam timing',m:al(.85),a:'mocks'}:{k:'rev',t:'Analyse yesterday\'s mock, redo mistakes, revise formulas',m:al(.6),a:'revise'})}
+ else tasks.push({k:'ex',t:'Exam day: light revision, sleep early',m:30,a:'guide'});
+ if(ph!=='Exam'){tasks.push({k:'m',t:'Mistake notebook and flashcards',m:15,a:'revise'});tasks.push({k:'ca',t:'Current affairs: add and review this week\'s items',m:15,a:'ca',id:'ca'})}
+ return{ph,tasks}}
+const taskDone=(date,k)=>!!(S.plan[date]&&S.plan[date][k]);
+
+/* ---------- charts ---------- */
+function barChart(vals,labels){const w=560,h=110,n=vals.length,bw=w/n,mx=Math.max(...vals,10);
+ return`<svg class="svg" viewBox="0 0 ${w} ${h+24}" width="100%" role="img" aria-label="Questions attempted per day"><line class="ax" x1="0" y1="${h}" x2="${w}" y2="${h}"/><line class="grid" x1="0" y1="${h-h*.5}" x2="${w}" y2="${h-h*.5}"/>
+ <text x="0" y="${h*.5-3}">${Math.round(mx/2)}</text><text x="0" y="10">${mx}</text>
+ ${vals.map((v,i)=>{const bh=v/mx*(h-14);return`<rect class="bar1" x="${i*bw+6}" y="${h-bh}" width="${bw-12}" height="${bh}" rx="3"/>${v?`<text x="${i*bw+bw/2}" y="${h-bh-4}" text-anchor="middle">${v}</text>`:''}<text x="${i*bw+bw/2}" y="${h+14}" text-anchor="middle">${labels[i]}</text>`}).join('')}</svg>`}
+function lineChart(pts){const w=560,h=130,n=pts.length;if(!n)return'';const x=i=>n===1?w/2:30+i*(w-60)/(n-1),y=v=>h-8-v/100*(h-24);
+ return`<svg class="svg" viewBox="0 0 ${w} ${h+10}" width="100%" role="img" aria-label="Mock score trend">${[0,50,100].map(g=>`<line class="grid" x1="26" y1="${y(g)}" x2="${w}" y2="${y(g)}"/><text x="0" y="${y(g)+4}">${g}</text>`).join('')}
+ <polyline class="ln" points="${pts.map((v,i)=>x(i)+','+y(v)).join(' ')}"/>${pts.map((v,i)=>`<circle class="dot" cx="${x(i)}" cy="${y(v)}" r="${i===n-1?5:3}"/>`).join('')}
+ <text x="${x(n-1)}" y="${y(pts[n-1])-10}" text-anchor="middle">${pts[n-1]}%</text></svg>`}
+
+/* ---------- coach ---------- */
+function coach(){const tips=[],tot=totals(),due=dueNB().length,dc=dueCards().length;
+ if(tot.a===0)tips.push({h:'Start with your first lesson',w:'Open Simplification, read it once, then do 10 questions. This sets your baseline so I can steer you.',b:'Open lesson',act:'lesson',id:'simp'});
+ if(due)tips.push({h:'Review '+due+' mistake'+(due>1?'s':'')+' due today',w:'Mistakes you revisit after a day, then three days, then a week are the ones you stop repeating.',b:'Open notebook',act:'rvgo',id:'nb'});
+ weakTopics().slice(0,2).forEach(x=>tips.push({h:'Fix '+tname(x.id)+' ('+x.acc+'% accuracy)',w:'Re-read the lesson, then do 15 questions slowly. Aim for 80% before you chase speed.',b:'Practise 15',act:'prstart',id:x.id,n:15}));
+ const nl=L.find(l=>!S.learned[l.id]&&l.id!=='ca');if(nl)tips.push({h:'Next lesson: '+nl.name,w:'About '+nl.mins+' minutes. Learn it, then mark it as learned.',b:'Open lesson',act:'lesson',id:nl.id});
+ SEC_IDS.forEach(sc=>{let a=0,t=0;ids(sc).forEach(id=>{const s=S.stats[id];if(s){a+=s.a;t+=s.t}});if(a>=20){const av=Math.round(t/a);if((sc==='Quant'||sc==='Reasoning')&&av>50)tips.push({h:sc+' is slow: '+av+' s per question',w:'Prelims allows about 34 s per question. Practise timed sets and skip anything that crosses 60 s.',b:'Timed practice',act:'prsec',id:sc})}});
+ const lm=S.mocks[S.mocks.length-1];if(tot.a>=80&&(!lm||diff(lm.date,today())>=7))tips.push({h:'Take a mock this week',w:'One timed mock a week shows where marks are leaking. Analyse every wrong answer afterwards.',b:'Go to mocks',act:'tab',id:'mocks'});
+ {const n=caItems(weekOf(today())).length;if(n<CA_GOAL)tips.push({h:'Current affairs: '+n+' of '+CA_GOAL+' items this week',w:'Add the week\'s news once, then quiz yourself on it. Static GK is easy, current affairs is where Mains marks are won.',b:'Add items',act:'lesson',id:'ca'})}
+ if(dc)tips.push({h:dc+' flashcard'+(dc>1?'s':'')+' ready',w:'Ten minutes of flashcards keeps formulas and awareness facts fresh.',b:'Open flashcards',act:'rvgo',id:'fc'});
+ return tips}
+function report(){const t=totals(),lines=['RRB prep report for '+S.name+' ('+today()+')','Exam date: '+S.examDate+' ('+diff(today(),S.examDate)+' days left), '+S.hours+' h/day, post: '+S.post,
+ 'Streak: '+streak()+' days. Questions: '+t.a+' at '+t.acc+'% accuracy. Study this week: '+hrs(weekMin())+'. Lessons done: '+Object.keys(S.learned).length+'/'+(L.length-1),'','Topic stats (attempts, accuracy, avg seconds):'];
+ L.forEach(l=>{const s=tStat(l.id);if(s.a)lines.push('- '+l.sec+' / '+l.name+': '+s.a+' Q, '+s.acc+'%, '+s.avg+' s')});
+ lines.push('','Recent mocks:');S.mocks.slice(-5).forEach(m=>lines.push('- '+m.date+' '+m.name+': '+(Math.round(m.score*100)/100)+'/'+m.max+' (C '+m.correct+', W '+m.wrong+', S '+m.skip+')'));
+ lines.push('','Mistakes waiting in notebook: '+S.notebook.length+' ('+dueNB().length+' due)','','Tutor, based on this, what should I focus on this week and how should I change my plan?');return lines.join('\n')}
+
+/* ---------- toast & clipboard ---------- */
+let tt;function toast(m){ui.toast=m;clearTimeout(tt);tt=setTimeout(()=>{ui.toast='';const e=$('.toast');if(e)e.remove()},2200);const e=$('.toast');if(e)e.remove();document.body.insertAdjacentHTML('beforeend','<div class="toast" role="status">'+esc(m)+'</div>')}
+function copy(text,ta){try{navigator.clipboard.writeText(text).then(()=>toast('Copied'),()=>{if(ta){ta.select();toast('Press Ctrl+C to copy')}})}catch(e){if(ta){ta.select();toast('Press Ctrl+C to copy')}}}
+
+/* ---------- question rendering ---------- */
+const LET='ABCDE';
+function qHtml(q,sel,reveal,act){return(q.ctx||'')+'<p class="q">'+esc(q.q)+'</p><div class="opts">'+q.o.map((o,i)=>{let c='opt';if(reveal){if(i===q.a)c+=' right';else if(i===sel)c+=' wrong'}else if(i===sel)c+=' sel';
+ return`<button class="${c}" data-act="${act}" data-i="${i}" ${reveal?'disabled':''}><b>${LET[i]}</b><span>${esc(o)}</span></button>`}).join('')+'</div>'}
+const expHtml=q=>'<div class="exp"><b>Explanation.</b> '+esc(q.e)+'</div>';
+
+/* ---------- views ---------- */
+function vDash(){const dl=diff(today(),S.examDate),t=totals(),pl=planFor(today()),done=pl.tasks.filter(x=>taskDone(today(),x.k)).length,cov=Object.keys(S.learned).length,tot=L.length-1;
+ const days=[],labs=[];for(let i=13;i>=0;i--){const d=addDays(today(),-i);days.push((S.daily[d]||{}).q||0);labs.push(i%2===0?pd(d).getDate():'')}
+ const tips=coach(),top=tips[0],weak=weakTopics().slice(0,4),lm=S.mocks.slice(-3).reverse();
+ return`<div class="hero"><div class="card"><div class="row between"><span class="chip acc">${pl.ph==='Before'?'Foundation':pl.ph}</span><span class="muted small">${S.examSet?'Exam date '+fd(S.examDate):'Sample date: set yours in Planner'}</span></div>
+ <h1 style="margin:10px 0 4px">Hi ${esc(S.name)}, ${dl>0?'here is your day':'update your exam date'}</h1>
+ <div class="count"><span class="n">${Math.max(0,dl)}</span><span class="muted">days to your target exam</span></div>
+ <p class="muted small" style="margin-top:10px">${S.hours} hours a day, plan for ${esc(S.post==='Both'?'Officer Scale I and Office Assistant':S.post)}.</p></div>
+ <div class="card"><h3>Next best step</h3>${top?`<p><b>${esc(top.h)}</b></p><p class="muted small">${esc(top.w)}</p><button class="btn pri" data-act="${top.act}" data-id="${top.id||''}" data-n="${top.n||''}">${esc(top.b)}</button>`:'<p class="muted">You are up to date. Try a mock or a 20-question mix.</p>'}</div></div>
+ <div class="grid t4" style="margin-bottom:14px"><div class="tile"><div class="v">${streak()}</div><div class="l">Day streak</div></div><div class="tile"><div class="v">${t.a}</div><div class="l">Questions</div></div><div class="tile"><div class="v">${t.a?t.acc+'%':'-'}</div><div class="l">Accuracy</div></div><div class="tile"><div class="v">${cov}/${tot}</div><div class="l">Lessons done</div></div></div>
+ <div class="grid"><div class="card"><div class="row between"><h3>Today's plan</h3><span class="chip ${done===pl.tasks.length?'good':'mut'}">${done}/${pl.tasks.length} done</span></div>${tasksHtml(today(),pl.tasks,true)}</div>
+ <div class="col"><div class="card"><h3>Questions per day, last 14 days</h3>${barChart(days,labs)}</div>
+ <div class="card"><h3>Weak topics</h3>${weak.length?weak.map(x=>`<div class="coach"><div class="w"><b>${esc(tname(x.id))}</b><div class="muted small">${x.a} questions, ${x.avg} s each</div></div><span class="chip bad">${x.acc}%</span><button class="btn sm" data-act="prstart" data-id="${x.id}" data-n="15">Practise</button></div>`).join(''):'<p class="muted">Weak topics appear after you attempt at least 5 questions in a topic.</p>'}</div></div></div>
+ ${lm.length?`<div class="card" style="margin-top:14px"><h3>Latest mocks</h3><div class="scroll"><table><tr><th>Date</th><th>Mock</th><th>Score</th><th>Accuracy</th></tr>${lm.map(m=>`<tr><td>${fd(m.date)}</td><td>${esc(m.name)}</td><td class="num">${Math.round(m.score*100)/100}/${m.max}</td><td class="num">${pct(m.correct,m.correct+m.wrong)}%</td></tr>`).join('')}</table></div></div>`:''}`}
+function tasksHtml(date,tasks,act){return tasks.map(x=>{const d=taskDone(date,x.k);return`<div class="task ${d?'done':''}"><input type="checkbox" id="tk-${date}-${x.k}" ${d?'checked':''} data-chg="task" data-date="${date}" data-k="${x.k}" aria-label="Mark done"><div class="t"><label for="tk-${date}-${x.k}">${esc(x.t)}</label></div><span class="m">${x.m} min</span>${act&&x.a?`<button class="btn sm" data-act="taskgo" data-a="${x.a}" data-id="${x.id||''}">Open</button>`:''}</div>`}).join('')}
+
+function vStudy(){const s=ui.st,lid=s.id,l=LB[lid]||L[0],secs=SEC_IDS;
+ let ex='';if(s.ex)ex=`<div class="card flat" style="border:1px solid var(--line)"><h3>Worked example</h3>${qHtml(s.ex,s.ex.a,true,'noop')}${expHtml(s.ex)}</div>`;
+ return`<div class="pills" style="margin-bottom:10px">${secs.map(x=>`<button class="pill ${s.sec===x?'on':''}" data-act="stsec" data-id="${x}">${SECN[x].name.replace(' and Financial Awareness','').replace('Quantitative Aptitude','Quant')}</button>`).join('')}</div>
+ <div class="pills" style="margin-bottom:16px">${ids(s.sec).map(id=>`<button class="pill ${lid===id?'on':''}" data-act="stopen" data-id="${id}">${esc(tname(id))}<span class="d ${S.learned[id]?'ok':''}"></span></button>`).join('')}</div>
+ <div class="card lesson"><div class="row between"><div><span class="chip mut">${SECN[l.sec].name}</span><h2 style="margin-top:8px">${esc(l.name)}</h2><div class="muted small">About ${l.mins} minutes</div></div>
+ <label class="chk"><input type="checkbox" id="learned" ${S.learned[l.id]?'checked':''} data-chg="learned" data-id="${l.id}"> Mark as learned</label></div><hr style="border:0;border-top:1px solid var(--line);margin:14px 0">
+ <h3>Key ideas</h3><ul>${l.notes.map(n=>'<li>'+n+'</li>').join('')}</ul>
+ ${l.formulas.length?`<h3>Formulas and facts</h3><div class="fm">${l.formulas.map(f=>`<div>${esc(f[0])}</div><div>${esc(f[1])}</div>`).join('')}</div>`:''}
+ ${l.tips.length?`<h3>Exam tips</h3><ul>${l.tips.map(n=>'<li>'+n+'</li>').join('')}</ul>`:''}
+ ${l.special==='ca'?caHtml():''}
+ <div class="row" style="margin:6px 0 14px">${G.has(l.id)?`<button class="btn" data-act="example" data-id="${l.id}">Show a worked example</button><button class="btn pri" data-act="prstart" data-id="${l.id}" data-n="10">Practise 10 questions</button>`:''}</div>${ex}</div>`}
+const CA_CATS=['Banking and RBI','Economy','Schemes and Govt','National','International','Appointments','Awards','Sports','Science and Tech','Summits and Days'],CA_GOAL=10;
+const weekOf=ds=>{const d=pd(ds),k=(d.getDay()+6)%7;return addDays(ds,-k)};
+const caWeek=()=>(ui.ca&&ui.ca.w)||weekOf(today());
+const caItems=w=>S.notes.map((n,i)=>Object.assign({},n,{i,w:n.w||weekOf(n.d)})).filter(n=>n.w===w);
+function caHtml(){ui.ca=ui.ca||{rv:null};if(!ui.ca.w)ui.ca.w=weekOf(today());const w=ui.ca.w,cur=weekOf(today()),items=caItems(w),isCur=w===cur,done=!!(S.caweeks||{})[w],end=addDays(w,6);
+ const head=`<div class="row between" style="margin:4px 0 12px"><div class="row"><button class="btn sm" data-act="cawk" data-n="-1" aria-label="Previous week">&lt; Prev</button><b>${fd(w)} to ${fd(end)}</b>${isCur?'<span class="chip acc">This week</span>':''}<button class="btn sm" data-act="cawk" data-n="1" ${isCur||w>cur?'disabled':''} aria-label="Next week">Next &gt;</button></div>${done?'<span class="chip good">Week reviewed</span>':''}</div>`;
+ const prog=`<div style="margin-bottom:14px"><div class="row between small"><span>${items.length} of ${CA_GOAL} items for this week</span><span class="muted">${Math.min(100,pct(items.length,CA_GOAL))}%</span></div><progress value="${Math.min(items.length,CA_GOAL)}" max="${CA_GOAL}" style="width:100%;accent-color:var(--accent)"></progress><p class="muted small" style="margin-top:6px">Add about ten items once a week, from a weekly magazine or a monthly digest. Sunday is a good day to do it.</p></div>`;
+ const rv=ui.ca.rv;
+ if(rv){const list=items;const it=list[rv.i];if(!it){ui.ca.rv=null}else return head+`<div class="card fcard" style="min-height:160px"><span class="chip mut">${esc(it.c||'General')}</span><div>${esc(it.t)}</div>${rv.show?`<hr style="width:60%;border:0;border-top:1px solid var(--line)"><div class="muted">${it.x?esc(it.x):'No key fact saved for this item.'}</div>`:'<div class="muted small">Say the key fact out loud, then reveal.</div>'}</div><div class="row" style="margin:12px 0"><span class="muted small">Item ${rv.i+1} of ${list.length}</span><button class="btn" data-act="carvf">${rv.show?'Hide':'Reveal'}</button><button class="btn pri" data-act="carvn">${rv.i+1<list.length?'Next':'Finish'}</button><button class="btn" data-act="carvx">Exit</button></div>`}
+ const form=isCur?`<div class="card" style="margin-bottom:14px"><h3 style="margin-bottom:10px">Add an item</h3><div class="row" style="margin-bottom:8px"><select id="cacat" aria-label="Category">${CA_CATS.map(c=>`<option>${c}</option>`).join('')}</select><input type="text" id="canote" placeholder="Headline, e.g. RBI keeps repo rate unchanged" style="flex:1;min-width:220px"></div><div class="row"><input type="text" id="cadetail" placeholder="Key fact to remember (optional): who, where, how much" style="flex:1;min-width:220px"><button class="btn pri" data-act="canote">Add item</button></div></div>`:`<div class="notice" style="margin-bottom:14px"><p>You are viewing an earlier week. New items go into this week.</p><button class="btn sm" data-act="cawk" data-n="0">Go to this week</button></div>`;
+ const groups=CA_CATS.concat(['General']).map(c=>({c,l:items.filter(n=>(n.c||'General')===c)})).filter(g=>g.l.length);
+ const list=groups.length?groups.map(g=>`<h3 style="margin:14px 0 4px">${esc(g.c)} <span class="chip mut">${g.l.length}</span></h3>`+g.l.map(n=>`<div class="task"><div class="t"><span class="muted small">${fd(n.d)}</span><br>${esc(n.t)}${n.x?`<br><span class="muted small">${esc(n.x)}</span>`:''}</div><button class="btn sm bad" data-act="cadel" data-i="${n.i}">Delete</button></div>`).join('')).join(''):'<div class="notice">No items for this week yet. Add your first one above.</div>';
+ const acts=items.length?`<div class="row" style="margin:14px 0"><button class="btn pri" data-act="carvs">Quiz me on this week</button><button class="btn" data-act="cadone">${done?'Unmark week as reviewed':'Mark week as reviewed'}</button></div>`:'';
+ const wks=[...new Set(S.notes.map(n=>n.w||weekOf(n.d)))].sort().reverse();
+ const hist=wks.length>1?`<h3 style="margin:18px 0 6px">Past weeks</h3><div class="pills">${wks.map(k=>`<button class="pill ${k===w?'on':''}" data-act="cawk" data-w="${k}">${fd(k)} (${caItems(k).length})${(S.caweeks||{})[k]?'<span class="d ok"></span>':''}</button>`).join('')}</div>`:'';
+ return head+prog+form+acts+list+hist+'<div style="height:12px"></div>'}
+
+function vPractice(){const p=ui.pr;if(p.run)return vRun();const sec=p.sec,list=ids(sec).filter(x=>G.has(x));
+ return`<div class="grid"><div class="card"><h3>Choose topics</h3><div class="pills" style="margin-bottom:12px">${SEC_IDS.map(x=>`<button class="pill ${sec===x?'on':''}" data-act="prsec2" data-id="${x}">${x==='Quant'?'Quant':x}</button>`).join('')}</div>
+ ${list.map(id=>{const s=tStat(id);return`<label class="chk"><input type="checkbox" id="pt-${id}" ${p.sel[id]?'checked':''} data-chg="prsel" data-id="${id}"><span style="flex:1">${esc(tname(id))}</span><span class="chip ${s.cls}">${s.a?s.acc+'%':s.label}</span></label>`}).join('')||'<p class="muted">No practice questions in this section yet.</p>'}
+ <div class="row" style="margin-top:12px"><label for="prn" class="muted small">Questions</label><select id="prn" data-chg="prn">${[10,15,20,30].map(n=>`<option ${p.n===n?'selected':''}>${n}</option>`).join('')}</select><button class="btn pri" data-act="prgo">Start practice</button></div></div>
+ <div class="card"><h3>Quick starts</h3><div class="col"><button class="btn" data-act="prmix">Daily mix: 20 questions across sections</button><button class="btn" data-act="prweak" ${weakTopics().length?'':'disabled'}>Weak topics: 15 questions</button><button class="btn" data-act="prsec" data-id="Quant">Quant speed set: 20 questions</button><button class="btn" data-act="prsec" data-id="Reasoning">Reasoning set: 20 questions</button></div>
+ <p class="muted small" style="margin-top:12px">Every wrong answer is saved to your Mistake Notebook. Practice shows the explanation straight after each answer.</p></div></div>`}
+function vRun(){const r=ui.pr.run;if(r.i>=r.qs.length)return vRunEnd();const q=r.qs[r.i],ans=r.sel!==null;
+ return`<div class="card"><div class="row between" style="margin-bottom:12px"><span class="chip mut">${esc(tname(q.t))}</span><span class="muted small num">Question ${r.i+1} of ${r.qs.length}</span></div><div class="bar" style="margin-bottom:16px"><i style="width:${r.i/r.qs.length*100}%"></i></div>
+ ${qHtml(q,r.sel,ans,'pans')}${ans?expHtml(q):''}<div class="ex-actions">${ans?`<button class="btn pri" data-act="prnext">${r.i+1===r.qs.length?'Finish':'Next question'}</button>`:`<button class="btn" data-act="prskip">Skip</button>`}<button class="btn bad" data-act="prquit">End session</button></div></div>`}
+function vRunEnd(){const r=ui.pr.run,n=r.res.length,c=r.res.filter(x=>x.ok).length,tm=Math.round(r.res.reduce((a,x)=>a+x.t,0)/Math.max(1,n));
+ return`<div class="card"><h2>Session complete</h2><div class="grid t4" style="margin:14px 0"><div class="tile"><div class="v">${c}/${n}</div><div class="l">Correct</div></div><div class="tile"><div class="v">${pct(c,n)}%</div><div class="l">Accuracy</div></div><div class="tile"><div class="v">${tm}s</div><div class="l">Avg per question</div></div><div class="tile"><div class="v">${n-c}</div><div class="l">Added to notebook</div></div></div>
+ ${r.res.filter(x=>!x.ok).map(x=>`<div class="card flat" style="border:1px solid var(--line);margin-bottom:10px">${qHtml(x.q,x.sel,true,'noop')}${expHtml(x.q)}</div>`).join('')}
+ <div class="row"><button class="btn pri" data-act="prquit">Back to practice</button><button class="btn" data-act="rvgo" data-id="nb">Open notebook</button></div></div>`}
+
+function curSecs(c){const out=[];c.qs.forEach((q,i)=>{const l=out[out.length-1];if(l&&l.name===q.s)l.to=i;else out.push({name:q.s,from:i,to:i})});return out}
+function vMocks(){if(ui.cur)return vExam();if(ui.result)return vResult();
+ const fixed=(k,n,base)=>Array.from({length:n},(_,i)=>`<button class="btn" data-act="mstart" data-kind="${k}" data-seed="${base+i}" data-name="${k==='prelims'?'Prelims':'Mains'} Mock ${i+1}">Mock ${i+1}</button>`).join('');
+ const pts=S.mocks.filter(m=>m.kind==='prelims'||m.kind==='mains').map(m=>Math.max(0,Math.round(m.score/m.max*100)));
+ return`<div class="grid"><div class="card"><h3>Prelims mocks</h3><p class="muted small">80 questions, 45 minutes. Reasoning then Quant. +1 for correct, −0.25 for wrong.</p><div class="row">${fixed('prelims',6,1100)}<button class="btn pri" data-act="mstart" data-kind="prelims" data-seed="${Date.now()%1e9}" data-name="Prelims (fresh)">Fresh mock</button></div></div>
+ <div class="card"><h3>Mains mocks</h3><p class="muted small">200 questions, 2 hours. Reasoning, English, Quant, General Awareness, Computer.</p><div class="row">${fixed('mains',3,2200)}<button class="btn pri" data-act="mstart" data-kind="mains" data-seed="${Date.now()%1e9}" data-name="Mains (fresh)">Fresh mock</button></div></div>
+ <div class="card"><h3>Sectional tests</h3><p class="muted small">25 questions, 15 minutes. Build speed in one section.</p><div class="row">${SEC_IDS.map(s=>`<button class="btn" data-act="mstart" data-kind="sec" data-sec="${s}" data-seed="${Date.now()%1e9}" data-name="Sectional: ${s}">${s}</button>`).join('')}</div></div>
+ <div class="card"><h3>Mini mock</h3><p class="muted small">20 questions, 12 minutes. Ten Reasoning and ten Quant for a quick check.</p><button class="btn" data-act="mstart" data-kind="mini" data-seed="${Date.now()%1e9}" data-name="Mini mock">Start mini mock</button></div></div>
+ ${pts.length?`<div class="card" style="margin-top:14px"><h3>Score trend (% of maximum)</h3>${lineChart(pts)}</div>`:''}
+ <div class="card" style="margin-top:14px"><h3>Mock history</h3>${S.mocks.length?`<div class="scroll"><table><tr><th>Date</th><th>Mock</th><th>Score</th><th>Correct</th><th>Wrong</th><th>Skipped</th><th>Time</th></tr>${S.mocks.slice().reverse().slice(0,15).map(m=>`<tr><td>${fd(m.date)}</td><td>${esc(m.name)}</td><td class="num">${Math.round(m.score*100)/100}/${m.max}</td><td class="num">${m.correct}</td><td class="num">${m.wrong}</td><td class="num">${m.skip}</td><td class="num">${Math.round(m.used/60)} min</td></tr>`).join('')}</table></div>`:'<div class="notice">Your mock results will appear here. Questions in the fixed mocks are generated from a seed, so Mock 1 is always the same paper.</div>'}</div>`}
+
+function vExam(){const c=ui.cur,q=c.qs[c.i],r=c.resp[c.i],secs=curSecs(c),cs=secs.find(s=>c.i>=s.from&&c.i<=s.to);
+ const st=i=>{const x=c.resp[i];return x.s!==null&&x.m?'ansmark':x.s!==null?'ans':x.m?'mark':x.v?'na':''};
+ const cnt={ans:0,na:0,mark:0,nv:0};c.resp.forEach(x=>{if(x.s!==null)cnt.ans++;else if(x.v)cnt.na++;else cnt.nv++;if(x.m)cnt.mark++});
+ return`<div class="exam"><div class="col"><div class="card"><div class="row between"><div><b>${esc(c.name)}</b><div class="muted small">${c.qs.length} questions, ${Math.round(c.dur/60)} min</div></div><div class="timer num" id="timer">--:--</div></div>
+ ${secs.length>1?`<div class="pills" style="margin-top:12px">${secs.map(s=>`<button class="pill ${s===cs?'on':''}" data-act="mgo" data-i="${s.from}">${s.name==='GA'?'General Awareness':s.name}</button>`).join('')}</div>`:''}</div>
+ <div class="card"><div class="row between" style="margin-bottom:10px"><span class="chip mut">Question ${c.i+1} of ${c.qs.length}, ${cs.name==='GA'?'General Awareness':cs.name}</span>${r.m?'<span class="chip sky">Marked</span>':''}</div>${qHtml(q,r.s,false,'msel')}
+ <div class="ex-actions"><button class="btn" data-act="mgo" data-i="${Math.max(0,c.i-1)}" ${c.i===0?'disabled':''}>Previous</button><button class="btn" data-act="mclear">Clear answer</button><button class="btn" data-act="mmark">${r.m?'Unmark':'Mark for review'} and next</button><button class="btn pri" data-act="mgo" data-i="${Math.min(c.qs.length-1,c.i+1)}">Save and next</button></div></div></div>
+ <div class="card" style="position:sticky;top:64px"><h3>Question palette</h3><div class="pal">${c.qs.map((_,i)=>`<button class="pn ${st(i)} ${i===c.i?'cur':''}" data-act="mgo" data-i="${i}" aria-label="Question ${i+1}">${i+1}</button>`).join('')}</div>
+ <div class="leg" style="margin:12px 0"><span><i style="background:var(--good)"></i>Answered ${cnt.ans}</span><span><i style="border-color:var(--bad)"></i>Not answered ${cnt.na}</span><span><i></i>Not visited ${cnt.nv}</span><span><i style="border:1px dashed var(--sky)"></i>Marked ${cnt.mark}</span></div>
+ ${ui.mk.confirm?`<div class="notice"><p>Submit now? ${cnt.ans} answered, ${c.qs.length-cnt.ans} unanswered.</p><div class="row"><button class="btn pri" data-act="mfinish">Yes, submit</button><button class="btn" data-act="mcancel">Keep going</button></div></div>`:`<button class="btn pri" style="width:100%" data-act="mask">Submit test</button>`}</div></div>`}
+function vResult(){const x=ui.result,m=x.sum,rf=ui.mk.rf;
+ const secRows=Object.entries(m.sec).map(([k,v])=>`<tr><td>${k==='GA'?'General Awareness':k}</td><td class="num">${v.c}</td><td class="num">${v.w}</td><td class="num">${v.s}</td><td class="num">${Math.round((v.c-v.w*.25)*100)/100}/${v.n}</td><td class="num">${pct(v.c,v.c+v.w)}%</td><td class="num">${Math.round(v.t/Math.max(1,v.n))} s</td></tr>`).join('');
+ const tp=Object.entries(m.topics).filter(([k,v])=>v.w+v.s>0).sort((a,b)=>(b[1].w+b[1].s)-(a[1].w+a[1].s)).slice(0,6);
+ const items=x.qs.map((q,i)=>({q,r:x.resp[i],i})).filter(o=>rf==='all'||(rf==='wrong'&&o.r.s!==null&&o.r.s!==o.q.a)||(rf==='skip'&&o.r.s===null));
+ return`<div class="card"><div class="row between"><div><span class="chip acc">Result</span><h2 style="margin-top:8px">${esc(m.name)}</h2></div><div style="text-align:right"><div class="scorebig">${Math.round(m.score*100)/100}<span class="muted" style="font-size:20px">/${m.max}</span></div></div></div>
+ <div class="grid t4" style="margin:14px 0"><div class="tile"><div class="v" style="color:var(--good)">${m.correct}</div><div class="l">Correct</div></div><div class="tile"><div class="v" style="color:var(--bad)">${m.wrong}</div><div class="l">Wrong</div></div><div class="tile"><div class="v">${m.skip}</div><div class="l">Skipped</div></div><div class="tile"><div class="v">${pct(m.correct,m.correct+m.wrong)}%</div><div class="l">Accuracy</div></div></div>
+ <div class="scroll"><table><tr><th>Section</th><th>Right</th><th>Wrong</th><th>Skipped</th><th>Marks</th><th>Accuracy</th><th>Time per Q</th></tr>${secRows}</table></div>
+ ${tp.length?`<p style="margin-top:14px"><b>Where marks leaked:</b> ${tp.map(([k,v])=>esc(tname(k))+' ('+v.w+' wrong, '+v.s+' skipped)').join(', ')}.</p>`:''}
+ <p class="muted small">${m.wrong?m.wrong+' wrong answers were added to your Mistake Notebook.':'No wrong answers this time.'}</p><div class="row"><button class="btn pri" data-act="mdone">Back to mocks</button><button class="btn" data-act="rvgo" data-id="nb">Open notebook</button></div></div>
+ <div class="card" style="margin-top:14px"><div class="row between"><h3>Review answers</h3><div class="pills">${[['wrong','Wrong'],['skip','Skipped'],['all','All']].map(([k,n])=>`<button class="pill ${rf===k?'on':''}" data-act="mrf" data-id="${k}">${n}</button>`).join('')}</div></div>
+ ${items.slice(0,80).map(o=>`<div class="card flat" style="border:1px solid var(--line);margin-top:12px"><div class="muted small" style="margin-bottom:6px">Q${o.i+1}, ${esc(tname(o.q.t))}, ${o.r.s===null?'skipped':o.r.s===o.q.a?'correct':'your answer: '+LET[o.r.s]}</div>${qHtml(o.q,o.r.s,true,'noop')}${expHtml(o.q)}</div>`).join('')||'<div class="notice" style="margin-top:12px">Nothing to show for this filter.</div>'}${items.length>80?`<p class="muted small">Showing the first 80 of ${items.length}.</p>`:''}</div>`}
+
+function vRevise(){const r=ui.rv;return`<div class="pills" style="margin-bottom:14px"><button class="pill ${r.sub==='nb'?'on':''}" data-act="rvgo" data-id="nb">Mistake notebook (${dueNB().length} due)</button><button class="pill ${r.sub==='fc'?'on':''}" data-act="rvgo" data-id="fc">Flashcards (${dueCards().length} due)</button></div>${r.sub==='nb'?vNB():vFC()}`}
+function vNB(){const r=ui.rv,due=dueNB();
+ if(r.nb){const it=r.nb.q[r.nb.i];if(!it)return`<div class="card"><h2>Notebook session done</h2><p class="muted">${r.nb.ok} of ${r.nb.q.length} correct. Correct answers move to a longer gap; wrong ones return tomorrow.</p><button class="btn pri" data-act="nbend">Back to notebook</button></div>`;
+  const q=it.q,a=r.nb.sel!==null;return`<div class="card"><div class="row between" style="margin-bottom:12px"><span class="chip mut">${esc(tname(q.t))}</span><span class="muted small num">${r.nb.i+1} of ${r.nb.q.length}</span></div>${qHtml(q,r.nb.sel,a,'nbans')}${a?expHtml(q)+'<div class="ex-actions"><button class="btn pri" data-act="nbnext">Next</button></div>':''}</div>`}
+ const by={};S.notebook.forEach(x=>by[x.q.t]=(by[x.q.t]||0)+1);
+ return`<div class="grid"><div class="card"><h3>Review due mistakes</h3><p class="muted">${due.length?due.length+' question'+(due.length>1?'s are':' is')+' due.':'Nothing is due right now.'} Gaps grow as you get them right: 1, 3, 7, 14 and 30 days.</p><button class="btn pri" data-act="nbstart" ${due.length?'':'disabled'}>Start review</button></div>
+ <div class="card"><h3>What is in your notebook</h3>${S.notebook.length?Object.entries(by).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="coach"><span>${esc(tname(k))}</span><span class="chip bad">${v}</span></div>`).join(''):'<div class="notice">Wrong answers from practice and mocks land here automatically.</div>'}${S.notebook.length?'<div style="height:10px"></div><button class="btn sm bad" data-act="nbclear">Clear notebook</button>':''}</div></div>`}
+function vFC(){const r=ui.rv;
+ if(r.fc){const id=r.fc.q[r.fc.i];if(!id)return`<div class="card"><h2>Flashcards done</h2><p class="muted">Cards you knew return after a longer gap.</p><button class="btn pri" data-act="fcend">Back</button></div>`;
+  const c=DECK.find(x=>x.id===id);return`<div class="card fcard" data-act="fcflip" tabindex="0" role="button"><span class="chip mut">${c.sec==='GA'?'General Awareness':c.sec}</span><div>${esc(c.f)}</div>${r.fc.show?`<hr style="width:60%;border:0;border-top:1px solid var(--line)"><div style="color:var(--accent);font-size:16px">${esc(c.b)}</div>`:'<div class="muted small">Tap to show the answer</div>'}</div>
+  ${r.fc.show?'<div class="row" style="margin-top:12px"><button class="btn pri" data-act="fcgot">I knew it</button><button class="btn" data-act="fcagain">Again</button></div>':''}`}
+ const d=dueCards(r.fsec);return`<div class="card"><div class="pills" style="margin-bottom:12px">${['All'].concat(SEC_IDS).map(s=>`<button class="pill ${r.fsec===s?'on':''}" data-act="fcsec" data-id="${s}">${s==='GA'?'General Awareness':s}</button>`).join('')}</div><p class="muted">${d.length} card${d.length===1?'':'s'} due in this set. The deck holds ${DECK.length} cards: formulas, banking facts, headquarters, vocabulary and idioms.</p><button class="btn pri" data-act="fcstart" ${d.length?'':'disabled'}>Start (up to 20 cards)</button></div>`}
+
+function vTracker(){const t=totals(),sections=SEC_IDS.map(sc=>{const rows=L.filter(l=>l.sec===sc&&l.id!=='ca').map(l=>{const s=tStat(l.id);return`<tr><td>${esc(l.name)}${S.learned[l.id]?' <span class="chip good">learned</span>':''}</td><td class="num">${s.a||'-'}</td><td style="min-width:110px">${s.a?`<div class="bar ${s.cls==='mut'?'':s.cls}"><i style="width:${s.acc}%"></i></div>`:''}</td><td class="num">${s.a?s.acc+'%':'-'}</td><td class="num">${s.a?s.avg+' s':'-'}</td><td><span class="chip ${s.cls}">${s.label}</span></td></tr>`}).join('');
+  return`<div class="card" style="margin-bottom:14px"><h3>${SECN[sc].name}</h3><div class="scroll"><table><tr><th>Topic</th><th>Attempts</th><th>Accuracy</th><th></th><th>Avg time</th><th>Status</th></tr>${rows}</table></div></div>`}).join('');
+ const mins=[],labs=[];for(let i=13;i>=0;i--){const d=addDays(today(),-i);mins.push((S.daily[d]||{}).min||0);labs.push(i%2===0?pd(d).getDate():'')}
+ return`<div class="grid t4" style="margin-bottom:14px"><div class="tile"><div class="v">${t.a}</div><div class="l">Questions</div></div><div class="tile"><div class="v">${t.a?t.acc+'%':'-'}</div><div class="l">Accuracy</div></div><div class="tile"><div class="v">${hrs(weekMin())}</div><div class="l">Study this week</div></div><div class="tile"><div class="v">${S.mocks.length}</div><div class="l">Mocks taken</div></div></div>
+ <div class="grid" style="margin-bottom:14px"><div class="card"><h3>Log study time</h3><div class="row"><select id="lgsub">${['Quant','Reasoning','English','GA','Computer','Revision','Mock analysis'].map(x=>`<option>${x}</option>`).join('')}</select><input type="number" id="lgmin" min="5" max="600" value="30" style="width:90px" aria-label="Minutes"><span class="muted small">minutes</span><button class="btn pri" data-act="lgadd">Add</button></div>
+ <div class="row" style="margin-top:14px"><span class="timer num" id="swtime">${ui.sw?'':'00:00'}</span>${ui.sw?'<button class="btn" data-act="swstop">Stop and log</button>':'<button class="btn" data-act="swstart">Start stopwatch</button>'}</div><p class="muted small" style="margin-top:8px">Minutes spent in mocks are logged automatically.</p></div>
+ <div class="card"><h3>Study minutes, last 14 days</h3>${barChart(mins,labs)}</div></div>${sections}`}
+
+function vPlanner(){const T=Math.max(1,diff(S.planStart,S.examDate)+1),i=Math.min(T,Math.max(0,diff(S.planStart,today()))),f=Math.round(T*.4),p=Math.round(T*.75);
+ const days=[];for(let k=0;k<7;k++)days.push(addDays(today(),k));
+ return`<div class="card" style="margin-bottom:14px"><h3>Your roadmap, ${T} days</h3><div style="display:flex;height:12px;border-radius:99px;overflow:hidden;margin:10px 0"><div style="flex:${f};background:var(--sky)"></div><div style="flex:${p-f};background:var(--accent)"></div><div style="flex:${Math.max(1,T-p)};background:var(--good)"></div></div>
+ <div class="row between small"><span><b>Foundation</b> days 1 to ${f}: learn every topic</span><span><b>Practice</b> days ${f+1} to ${p}: timed sets on weak topics</span><span><b>Revision</b> days ${p+1} to ${T}: mocks and analysis</span></div><p class="muted small" style="margin-top:8px">You are on day ${Math.min(T,i+1)} of ${T}. Sundays are mocks, Saturdays add a sectional test.</p></div>
+ <div class="grid"><div class="col">${days.map(d=>{const pl=planFor(d);return`<div class="card"><div class="row between"><h3>${d===today()?'Today, ':''}${fd(d)}</h3><span class="chip mut">${pl.ph==='Before'?'Foundation':pl.ph}</span></div>${tasksHtml(d,pl.tasks,d===today())}</div>`}).join('')}</div>
+ <div class="col"><div class="card"><h3>Settings</h3><div class="col"><label class="muted small" for="sname">Your name</label><input type="text" id="sname" value="${esc(S.name)}" data-chg="sname"><label class="muted small" for="sdate">Target exam date (Prelims)</label><input type="date" id="sdate" value="${S.examDate}" data-chg="sdate"><label class="muted small" for="shrs">Study hours per day</label><select id="shrs" data-chg="shrs">${[2,2.5,3,3.5,4].map(h=>`<option ${S.hours===h?'selected':''}>${h}</option>`).join('')}</select><label class="muted small" for="spost">Post</label><select id="spost" data-chg="spost">${['Both','Officer Scale I (PO)','Office Assistant (Clerk)'].map(h=>`<option ${S.post===h?'selected':''}>${h}</option>`).join('')}</select></div><p class="muted small" style="margin-top:10px">Check IBPS's official notification for the real exam dates and update here.</p></div>
+ <div class="card"><h3>Backup and reset</h3><p class="muted small">Progress is saved in this browser only. Copy a backup now and then.</p><div class="row"><button class="btn" data-act="bkexp">Show backup text</button><button class="btn" data-act="bkimp">Restore from text</button></div><textarea id="bk" placeholder="Backup text appears here. Paste a backup here to restore." style="margin-top:10px"></textarea>
+ ${ui.reset?`<div class="notice" style="margin-top:10px"><p>This erases all progress, mocks and notes on this device.</p><div class="row"><button class="btn bad" data-act="rsyes">Erase everything</button><button class="btn" data-act="rsno">Cancel</button></div></div>`:'<button class="btn bad sm" style="margin-top:10px" data-act="rsask">Reset all data</button>'}</div></div></div>`}
+
+function vTutor(){const tips=coach(),rp=report();
+ return`<div class="grid"><div class="card"><h3>Your coach says</h3>${tips.length?tips.map(t=>`<div class="coach"><div class="w"><b>${esc(t.h)}</b><div class="muted small">${esc(t.w)}</div></div><button class="btn sm pri" data-act="${t.act}" data-id="${t.id||''}" data-n="${t.n||''}">${esc(t.b)}</button></div>`).join(''):'<p class="muted">Nothing urgent. Keep your streak going.</p>'}</div>
+ <div class="col"><div class="card"><h3>A good study loop</h3><ol style="margin:0;padding-left:20px"><li>Read one lesson (20 to 40 minutes).</li><li>Study the worked example, then do 10 questions.</li><li>Read every explanation, including the ones you got right.</li><li>Next day: clear the due mistakes and flashcards first.</li><li>Weekly: one timed mock, then a full analysis.</li></ol></div>
+ <div class="card"><h3>Talk to your tutor</h3><p class="muted small">The detailed coaching happens in our chat. Copy this report and paste it there. Ask me to explain a concept, set a custom test, build a current affairs capsule or adjust your plan.</p><textarea id="rep" readonly style="min-height:150px;font-family:var(--f-mono);font-size:12px">${esc(rp)}</textarea><div class="row" style="margin-top:8px"><button class="btn pri" data-act="repcopy">Copy report</button></div></div></div></div>`}
+
+function vGuide(){const T=D.GUIDE_PATTERN;
+ return`<div class="grid"><div class="card" style="grid-column:1/-1"><h3>Exam pattern</h3><div class="scroll"><table><tr><th>Stage</th><th>Sections</th><th>Marks and time</th></tr>${T.map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</table></div><p class="muted small" style="margin-top:10px">This is the pattern in recent IBPS RRB notifications. Always check the latest official notification on ibps.in before you plan, as IBPS can change sections or timing.</p></div>
+ <div class="card"><h3>Time strategy</h3><ul style="padding-left:18px;margin:0"><li><b>Prelims (45 min):</b> about 20 minutes for Reasoning and 25 for Quant. Start with the sections you trust.</li><li><b>Mains (120 min):</b> Reasoning 30, English 25, Quant 35, General Awareness 15, Computer 15.</li><li>First pass: answer everything you can solve in under 45 seconds. Mark the rest.</li><li>Second pass: attempt marked questions, longest last.</li></ul></div>
+ <div class="card"><h3>Negative marking, with numbers</h3><p>Each wrong answer costs 0.25. With five options, a pure guess has an expected gain of <b>0</b>. If you can eliminate one option, the expected gain becomes about +0.06 per question. Eliminate two and it is about +0.17. So guess only when you have removed at least one option.</p><p class="muted small">Target accuracy: 85% or more on attempted questions.</p></div>
+ <div class="card"><h3>How to analyse a mock</h3><ol style="padding-left:18px;margin:0"><li>Sort mistakes into concept gaps, silly errors, and time pressure.</li><li>Redo every wrong question without looking at the explanation.</li><li>Check your skipped questions. Many are solvable in 30 seconds.</li><li>Note the topic. Practise that topic the next day.</li></ol></div>
+ <div class="card"><h3>Weekly rhythm</h3><ul style="padding-left:18px;margin:0"><li><b>Mon to Fri:</b> two new topics a day, plus mistakes and flashcards.</li><li><b>Saturday:</b> a sectional test and a weak-topic drill.</li><li><b>Sunday:</b> a full mock, then a long analysis.</li><li>Read the news for 20 minutes every day.</li></ul></div>
+ <div class="card" style="grid-column:1/-1"><h3>Interview preparation (Officer Scale I)</h3><p class="muted small">Practise these aloud, in under 90 seconds each.</p>${D.INTERVIEW.map(x=>`<div class="coach"><div class="w"><b>${esc(x.q)}</b><div class="muted small">${esc(x.a)}</div></div></div>`).join('')}</div>
+ <div class="card" style="grid-column:1/-1"><h3>About the content</h3><p class="muted small">Questions are written for practice and follow the style of banking exams. They are not copies of real papers. Quant and reasoning questions are generated fresh, with every answer computed by code. Awareness facts reflect well-known, stable information. For anything that changes (rates, appointments, schemes), check the latest news and add notes under Current Affairs.</p></div></div>`}
+
+/* ---------- render & events ---------- */
+function render(){const root=$('#root');const views={dashboard:vDash,study:vStudy,practice:vPractice,mocks:vMocks,revise:vRevise,tracker:vTracker,planner:vPlanner,tutor:vTutor,guide:vGuide};
+ const ml=ui.cur&&ui.tab!=='mocks'?'<div class="notice" style="margin-bottom:14px">A mock is in progress. <button class="btn sm pri" data-act="tab" data-id="mocks">Return to mock</button></div>':'';
+ root.innerHTML=`<div class="top"><div class="brand"><b>RRB Prep Desk</b><span>IBPS RRB PO and Clerk</span></div><button class="btn sm" data-act="theme" aria-label="Switch theme">Switch theme</button></div>
+ <nav class="tabs" aria-label="Sections">${TABS.map(([id,n])=>`<button class="tab ${ui.tab===id?'on':''}" data-act="tab" data-id="${id}">${n}</button>`).join('')}</nav>${ml}<main>${views[ui.tab]()}</main>`;
+ tick()}
+function go(t){ui.tab=t;try{if(location.hash!=='#'+t)history.replaceState(null,'','#'+t)}catch(e){}render();window.scrollTo(0,0)}
+function openLesson(id){const l=LB[id];if(!l)return;ui.st={sec:l.sec,id,ex:null};go('study')}
+function buildQs(spec,seed){const R=G.RNG(seed||Date.now()%1e9);let qs=[];spec.forEach(s=>{qs=qs.concat(G.genQuestions(s.t,s.n,R))});return qs}
+function startPractice(spec){const qs=buildQs(spec);if(!qs.length){toast('No questions available for this choice');return}ui.pr.run={qs,i:0,sel:null,res:[],t0:Date.now(),qt:Date.now()};go('practice')}
+function spread(topics,n){const k=topics.length,base=Math.floor(n/k),ex=n%k;return topics.map((t,i)=>({t,n:base+(i<ex?1:0)})).filter(x=>x.n>0)}
+function startMock(kind,seed,sec,name){const m=G.buildMock(kind,seed,sec);const now=Date.now();ui.cur={name,kind,dur:m.dur,start:now,qs:m.qs,resp:m.qs.map(()=>({s:null,m:0,t:0,v:0})),i:0,ts:now};ui.cur.resp[0].v=1;ui.result=null;ui.mk.confirm=false;persistCur();go('mocks')}
+function persistCur(){S.cur=ui.cur;save()}
+function goQ(i){const c=ui.cur,n=Date.now();c.resp[c.i].t+=(n-c.ts)/1000;c.ts=n;c.i=i;c.resp[i].v=1;ui.mk.confirm=false;persistCur();render()}
+function finishMock(){const c=ui.cur,n=Date.now();c.resp[c.i].t+=(n-c.ts)/1000;let correct=0,wrong=0,skip=0;const sec={},topics={};
+ c.qs.forEach((q,i)=>{const r=c.resp[i],sc=sec[q.s]||(sec[q.s]={c:0,w:0,s:0,n:0,t:0}),tp=topics[q.t]||(topics[q.t]={c:0,w:0,s:0});sc.n++;sc.t+=r.t;
+  if(r.s===null){skip++;sc.s++;tp.s++}else if(r.s===q.a){correct++;sc.c++;tp.c++;rec(q,true,r.t)}else{wrong++;sc.w++;tp.w++;rec(q,false,r.t)}});
+ const used=Math.min(c.dur,Math.round((n-c.start)/1000)),sum={id:n,name:c.name,kind:c.kind,date:today(),score:correct-wrong*.25,max:c.qs.length,correct,wrong,skip,used,sec,topics};
+ S.mocks.push(sum);dayRec().min+=Math.round(used/60);S.log.push({d:today(),sub:'Mock',min:Math.round(used/60)});ui.result={sum,qs:c.qs,resp:c.resp};ui.cur=null;S.cur=null;ui.mk.rf='wrong';ui.mk.confirm=false;save();render()}
+function tick(){const c=ui.cur,e=$('#timer');if(c){const rem=Math.max(0,c.dur-(Date.now()-c.start)/1000);if(e){const m=Math.floor(rem/60),s=Math.floor(rem%60);e.textContent=pad(m)+':'+pad(s);e.classList.toggle('low',rem<300)}if(rem<=0)finishMock()}
+ const sw=$('#swtime');if(sw&&ui.sw){const s=Math.floor((Date.now()-ui.sw.start)/1000);sw.textContent=pad(Math.floor(s/60))+':'+pad(s%60)}}
+setInterval(tick,1000);
+
+function handle(a,d,el){switch(a){
+ case'tab':go(d.id);break;
+ case'theme':{const r=document.documentElement,dark=r.dataset.theme?r.dataset.theme==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;r.dataset.theme=dark?'light':'dark';try{localStorage.setItem('rrb.theme',r.dataset.theme)}catch(e){}break}
+ case'task':{const p=S.plan[d.date]||(S.plan[d.date]={});p[d.k]=el.checked;save();render();break}
+ case'taskgo':if(d.a==='lesson')openLesson(d.id);else if(d.a==='practice'){ui.pr.sec=LB[d.id].sec;ui.pr.sel={[d.id]:true};go('practice')}else if(d.a==='revise'){ui.rv.sub='nb';go('revise')}else if(d.a==='ca')openLesson('ca');else go(d.a);break;
+ case'lesson':openLesson(d.id);break;
+ case'stsec':ui.st.sec=d.id;ui.st.id=ids(d.id)[0];ui.st.ex=null;render();break;
+ case'stopen':ui.st.id=d.id;ui.st.ex=null;render();break;
+ case'learned':if(el.checked)S.learned[d.id]=1;else delete S.learned[d.id];save();render();break;
+ case'example':{const q=G.genQuestions(d.id,1,G.RNG(Date.now()%1e9))[0];ui.st.ex=q;render();break}
+ case'canote':{const i=$('#canote');if(i&&i.value.trim()){const x=$('#cadetail'),c=$('#cacat');S.notes.push({d:today(),w:weekOf(today()),c:c?c.value:'General',t:i.value.trim().slice(0,300),x:x?x.value.trim().slice(0,300):''});save();render()}break}
+ case'cadel':S.notes.splice(+d.i,1);save();render();break;
+ case'cawk':{ui.ca=ui.ca||{};const cur=weekOf(today());ui.ca.rv=null;if(d.w)ui.ca.w=d.w;else{const n=+d.n;ui.ca.w=n===0?cur:addDays(ui.ca.w||cur,7*n);if(ui.ca.w>cur)ui.ca.w=cur}render();break}
+ case'cadone':{S.caweeks=S.caweeks||{};const w=ui.ca.w;if(S.caweeks[w])delete S.caweeks[w];else S.caweeks[w]=1;save();render();break}
+ case'carvs':ui.ca.rv={i:0,show:false};render();break;
+ case'carvf':ui.ca.rv.show=!ui.ca.rv.show;render();break;
+ case'carvn':{const n=caItems(ui.ca.w).length;if(ui.ca.rv.i+1<n)ui.ca.rv={i:ui.ca.rv.i+1,show:false};else{ui.ca.rv=null;toast('Week reviewed. Mark it as reviewed when you are happy.')}render();break}
+ case'carvx':ui.ca.rv=null;render();break;
+ case'prsec2':ui.pr.sec=d.id;render();break;
+ case'prsel':ui.pr.sel[d.id]=el.checked;break;
+ case'prn':ui.pr.n=+el.value;break;
+ case'prgo':{const t=Object.keys(ui.pr.sel).filter(k=>ui.pr.sel[k]&&G.has(k));if(!t.length){toast('Select at least one topic');break}startPractice(spread(t,ui.pr.n));break}
+ case'prstart':{ui.pr.run=null;startPractice([{t:d.id,n:+d.n||10}]);break}
+ case'prsec':{const t=ids(d.id).filter(G.has);startPractice(spread(t,20));break}
+ case'prweak':startPractice(spread(weakTopics().slice(0,3).map(x=>x.id),15));break;
+ case'prmix':{const R=G.RNG(Date.now()%1e9),pick=(a,n)=>R.shuffle(a).slice(0,n),q=pick(ids('Quant'),2),r=pick(ids('Reasoning'),2),x=pick([].concat(ids('English'),ids('GA'),ids('Computer')).filter(id=>id!=='ca'&&G.has(id)),1);
+  startPractice(q.concat(r,x).map(t=>({t,n:4})));break}
+ case'pans':{const r=ui.pr.run;if(r.sel!==null)break;const q=r.qs[r.i],i=+d.i,ok=i===q.a,t=(Date.now()-r.qt)/1000;r.sel=i;r.res.push({q,sel:i,ok,t});rec(q,ok,t);save();render();break}
+ case'prskip':{const r=ui.pr.run;r.i++;r.sel=null;r.qt=Date.now();render();break}
+ case'prnext':{const r=ui.pr.run;r.i++;r.sel=null;r.qt=Date.now();if(r.i>=r.qs.length)dayRec().min+=Math.max(1,Math.round((Date.now()-r.t0)/60000));save();render();break}
+ case'prquit':ui.pr.run=null;render();break;
+ case'mstart':startMock(d.kind,+d.seed,d.sec,d.name);break;
+ case'msel':{const c=ui.cur;c.resp[c.i].s=+d.i;persistCur();render();break}
+ case'mclear':{const c=ui.cur;c.resp[c.i].s=null;persistCur();render();break}
+ case'mmark':{const c=ui.cur;c.resp[c.i].m=c.resp[c.i].m?0:1;goQ(Math.min(c.qs.length-1,c.i+1));break}
+ case'mgo':goQ(+d.i);break;
+ case'mask':ui.mk.confirm=true;render();break;
+ case'mcancel':ui.mk.confirm=false;render();break;
+ case'mfinish':finishMock();break;
+ case'mdone':ui.result=null;render();break;
+ case'mrf':ui.mk.rf=d.id;render();break;
+ case'rvgo':ui.rv.sub=d.id;ui.rv.nb=null;ui.rv.fc=null;go('revise');break;
+ case'nbstart':{ui.rv.nb={q:dueNB().slice(0,20),i:0,sel:null,ok:0};render();break}
+ case'nbans':{const n=ui.rv.nb,it=n.q[n.i];if(n.sel!==null)break;n.sel=+d.i;const ok=n.sel===it.q.a,x=S.notebook.find(y=>y.k===it.k);if(x){if(ok){n.ok++;x.box=Math.min(4,x.box+1);x.due=addDays(today(),INT[x.box])}else{x.box=0;x.due=addDays(today(),1)}}save();render();break}
+ case'nbnext':{const n=ui.rv.nb;n.i++;n.sel=null;render();break}
+ case'nbend':ui.rv.nb=null;render();break;
+ case'nbclear':S.notebook=[];save();render();break;
+ case'fcsec':ui.rv.fsec=d.id;render();break;
+ case'fcstart':ui.rv.fc={q:dueCards(ui.rv.fsec).slice(0,20).map(c=>c.id),i:0,show:false};render();break;
+ case'fcflip':ui.rv.fc.show=true;render();break;
+ case'fcgot':{const f=ui.rv.fc,id=f.q[f.i],b=Math.min(4,((S.cards[id]||{}).box||0)+1);S.cards[id]={box:b,due:addDays(today(),INT[b])};f.i++;f.show=false;save();render();break}
+ case'fcagain':{const f=ui.rv.fc,id=f.q[f.i];S.cards[id]={box:0,due:addDays(today(),1)};if(f.q.filter(x=>x===id).length<3)f.q.push(id);f.i++;f.show=false;save();render();break}
+ case'fcend':ui.rv.fc=null;render();break;
+ case'lgadd':{const m=Math.round(+$('#lgmin').value);if(m>0){dayRec().min+=m;S.log.push({d:today(),sub:$('#lgsub').value,min:m});save();toast('Logged '+m+' minutes');render()}break}
+ case'swstart':ui.sw={start:Date.now()};render();break;
+ case'swstop':{const m=Math.round((Date.now()-ui.sw.start)/60000);ui.sw=null;if(m>0){dayRec().min+=m;S.log.push({d:today(),sub:'Stopwatch',min:m});save();toast('Logged '+m+' minutes')}render();break}
+ case'sname':S.name=el.value.trim()||'Abhishek';save();break;
+ case'sdate':if(el.value){S.examDate=el.value;S.examSet=true;S.planStart=today();save();render()}break;
+ case'shrs':S.hours=+el.value;save();render();break;
+ case'spost':S.post=el.value;save();render();break;
+ case'bkexp':$('#bk').value=JSON.stringify(S);$('#bk').select();break;
+ case'bkimp':{try{const o=JSON.parse($('#bk').value);if(!o||typeof o!=='object'||!o.stats)throw 0;S=Object.assign(defaults(),o);save();toast('Backup restored');render()}catch(e){toast('That text is not a valid backup')}break}
+ case'rsask':ui.reset=true;render();break;
+ case'rsno':ui.reset=false;render();break;
+ case'rsyes':S=defaults();ui.reset=false;ui.cur=null;ui.result=null;save();toast('All data erased');render();break;
+ case'repcopy':copy($('#rep').value,$('#rep'));break;
+ case'noop':break}}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-act]');if(!t)return;if(t.matches('input[type=checkbox],select'))return;handle(t.dataset.act,t.dataset,t)});
+document.addEventListener('change',e=>{const t=e.target.closest('[data-chg]');if(t)handle(t.dataset.chg,t.dataset,t)});
+document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('.fcard')){e.preventDefault();handle('fcflip',{},e.target)}if(e.key==='Enter'&&e.target.id==='canote')handle('canote',{},e.target)});
+window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(TABS.some(t=>t[0]===h)&&h!==ui.tab){ui.tab=h;render()}});
+
+try{const th=localStorage.getItem('rrb.theme');if(th)document.documentElement.dataset.theme=th}catch(e){}
+if(S.cur&&S.cur.qs){ui.cur=S.cur;ui.tab='mocks'}
+const h0=location.hash.slice(1);if(TABS.some(t=>t[0]===h0)&&!ui.cur)ui.tab=h0;
+render();
+window.__rrb={S:()=>S,ui,render,handle,planFor,coach,DECK,go};
+})();
+</script>
+
+</body>
+</html>
