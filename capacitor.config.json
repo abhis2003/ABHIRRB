@@ -2,5 +2,8 @@
   "appId": "com.abhishek.rrbprep",
   "appName": "RRB Prep Desk",
   "webDir": "www",
-  "backgroundColor": "#0b1118"
+  "backgroundColor": "#0b1118",
+  "plugins": {
+    "CapacitorHttp": { "enabled": true }
+  }
 }
